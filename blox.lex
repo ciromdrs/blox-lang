@@ -43,9 +43,16 @@ invalid_id          {digit}+({alpha}|_)+
 "="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
-"+"                 {adjust(); return GT;}
+"+"                 {adjust(); return PLUS;}
+"-"                 {adjust(); return MINUS;}
+"*"                 {adjust(); return TIMES;}
+"/"                 {adjust(); return DIVIDE;}
+"=="                {adjust(); return EQ;}
+"!="                {adjust(); return NEQ;}
 ">"                 {adjust(); return GT;}
 "<"                 {adjust(); return LT;}
+">="                {adjust(); return GE;}
+"<="                {adjust(); return LE;}
 \{                  {adjust(); return LBRACK;}
 \}                  {adjust(); return RBRACK;}
 \(                  {adjust(); return LPAREN;}
