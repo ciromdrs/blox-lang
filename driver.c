@@ -11,11 +11,7 @@ int yylex(void); /* prototype for the lexing function */
 
 
 string toknames[] = {
-"ID", "STRING", "INT", "COMMA", "COLON", "SEMICOLON", "LPAREN",
-"RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "DOT", "PLUS",
-"MINUS", "TIMES", "DIVIDE", "EQ", "NEQ", "LT", "LE", "GT", "GE",
-"AND", "OR", "ASSIGN", "ARRAY", "IF", "ELSE", "LOOP", "BREAK",  "BLOCK",
- "NIL", "VAR", "TYPE"
+    "AND", "ARRAY", "ASSIGN", "BLOCK", "BREAK", "COLON", "COMMA", "CONTINUE", "DIVIDE", "DOT", "ELSE", "EQ", "FLOAT", "GE", "GT", "ID", "IF", "INT", "LBRACE", "LBRACK", "LE", "LOOP", "LPAREN", "LT", "MINUS", "NEQ", "NIL", "OR", "PLUS", "RBRACE", "RBRACK", "RPAREN", "SEMICOLON", "STRING", "TIMES"
 };
 
 
@@ -37,6 +33,9 @@ int main(int argc, char **argv) {
      break;
    case INT:
      printf("%10s %4d %d\n",tokname(tok),EM_tokPos,yylval.ival);
+     break;
+   case FLOAT:
+     printf("%10s %4d %f\n",tokname(tok),EM_tokPos,yylval.fval);
      break;
    default:
      printf("%10s %4d\n",tokname(tok),EM_tokPos);
