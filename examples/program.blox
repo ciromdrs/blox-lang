@@ -1,0 +1,45 @@
+# this is the block 'program'
+
+# overal syntax
+block block_name [(param1 type1, ...)] [return_type] [extends block_name] [{ stmts ... }]
+
+# examples
+block sum(a, b int) int {
+    return a+b
+}
+
+# block extending
+block perform_operation(a,b int) int {
+    block operation int;
+    return operation()
+}
+block perform_addition(a,b int) int extends perform_operation {
+    block operation int {
+        return a+b
+    }
+}
+
+# classes
+block MyClass {
+    value int
+
+    # return type MyClass implies this method is a constructor,
+    # therefore self is instantiated
+    block new(v int) MyClass {
+        self.value = v
+    }
+    # another suggestion for constructors
+    new MyClass(v int) {
+        self.value = v
+    }
+    
+    block show {
+        print(self.value)
+    }
+}
+
+block SubClass extends MyClass{
+    block show {
+        print('(', self.value, ')')
+    }
+}
