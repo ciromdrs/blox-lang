@@ -39,9 +39,11 @@ invalid_id          {digit}+({alpha}|_)+
 "if"                {adjust(); return IF;}
 "else"              {adjust(); return ELSE;}
 "block"             {adjust(); return BLOCK;}
-":="                {adjust(); return ASSIGN;}
+"loop"              {adjust(); return LOOP;}
+"="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
+"+"                 {adjust(); return GT;}
 ">"                 {adjust(); return GT;}
 "<"                 {adjust(); return LT;}
 \{                  {adjust(); return LBRACK;}

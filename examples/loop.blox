@@ -1,0 +1,12 @@
+# loop = 'loop' [ decl ';' ] condition stmt_or_block [ 'else' stmt_or_block ]
+#      | 'loop' stmt_or_block condition [ 'else' stmt_or_block ]
+
+# simple loop
+loop i int = 0; i<10 {
+    i = i + 1
+}
+
+# do-while
+loop i int = 0 {
+    i = i + 1
+} i<10

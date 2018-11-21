@@ -6,6 +6,8 @@ typedef union  {
 	} YYSTYPE;
 extern YYSTYPE yylval;
 
+//  257 <= tok <= 299
+
 # define AND 257
 # define ARRAY 258
 # define ASSIGN 259
