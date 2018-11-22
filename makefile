@@ -1,20 +1,22 @@
-lextest: driver.o lex.yy.o errormsg.o util.o
-	cc -g -o lextest driver.o lex.yy.o errormsg.o util.o
+SRCDIR = .
 
-driver.o: driver.c tokens.h errormsg.h util.h
-	cc -g -c driver.c
+lextest: $(SRCDIR)/driver.o $(SRCDIR)/lex.yy.o $(SRCDIR)/errormsg.o $(SRCDIR)/util.o
+	cc -g -o $(SRCDIR)/lextest $(SRCDIR)/driver.o $(SRCDIR)/lex.yy.o $(SRCDIR)/errormsg.o $(SRCDIR)/util.o
 
-errormsg.o: errormsg.c errormsg.h util.h
-	cc -g -c errormsg.c
+driver.o: $(SRCDIR)/driver.c $(SRCDIR)/tokens.h $(SRCDIR)/errormsg.h $(SRCDIR)/util.h
+	cc -g -c $(SRCDIR)/driver.c
 
-lex.yy.o: lex.yy.c tokens.h errormsg.h util.h
-	cc -g -c lex.yy.c
+errormsg.o: $(SRCDIR)/errormsg.c $(SRCDIR)/errormsg.h $(SRCDIR)/util.h
+	cc -g -c $(SRCDIR)/errormsg.c
 
-lex.yy.c: blox.lex
-	lex blox.lex
+lex.yy.o: $(SRCDIR)/lex.yy.c $(SRCDIR)/tokens.h $(SRCDIR)/errormsg.h $(SRCDIR)/util.h
+	cc -g -c $(SRCDIR)/lex.yy.c
 
-util.o: util.c util.h
-	cc -g -c util.c
+lex.yy.c: $(SRCDIR)/blox.lex
+	lex $(SRCDIR)/blox.lex
+
+util.o: $(SRCDIR)/util.c $(SRCDIR)/util.h
+	cc -g -c $(SRCDIR)/util.c
 
 clean: 
-	rm -f a.out util.o driver.o lex.yy.o lex.yy.c errormsg.o
+	rm -f a.out $(SRCDIR)/util.o $(SRCDIR)/driver.o $(SRCDIR)/lex.yy.o $(SRCDIR)/lex.yy.c $(SRCDIR)/errormsg.o

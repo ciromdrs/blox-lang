@@ -473,8 +473,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "blox.lex"
-#line 2 "blox.lex"
+#line 1 "./blox.lex"
+#line 2 "./blox.lex"
 #include <string.h>
 #include "util.h"
 #include <stdlib.h>
@@ -713,7 +713,7 @@ YY_DECL
 		}
 
 	{
-#line 35 "blox.lex"
+#line 35 "./blox.lex"
 
 #line 719 "lex.yy.c"
 
@@ -774,148 +774,148 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 36 "blox.lex"
+#line 36 "./blox.lex"
 {adjust(); continue;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 37 "blox.lex"
+#line 37 "./blox.lex"
 {adjust(); continue;}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 38 "blox.lex"
+#line 38 "./blox.lex"
 {adjust(); EM_newline(); continue;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 39 "blox.lex"
+#line 39 "./blox.lex"
 {adjust(); return IF;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 40 "blox.lex"
+#line 40 "./blox.lex"
 {adjust(); return ELSE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 41 "blox.lex"
+#line 41 "./blox.lex"
 {adjust(); return BLOCK;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 42 "blox.lex"
+#line 42 "./blox.lex"
 {adjust(); return LOOP;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 43 "blox.lex"
+#line 43 "./blox.lex"
 {adjust(); return ASSIGN;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 44 "blox.lex"
+#line 44 "./blox.lex"
 {adjust(); return COLON;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 45 "blox.lex"
+#line 45 "./blox.lex"
 {adjust(); return COMMA;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 46 "blox.lex"
+#line 46 "./blox.lex"
 {adjust(); return PLUS;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 47 "blox.lex"
+#line 47 "./blox.lex"
 {adjust(); return MINUS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 48 "blox.lex"
+#line 48 "./blox.lex"
 {adjust(); return TIMES;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 49 "blox.lex"
+#line 49 "./blox.lex"
 {adjust(); return DIVIDE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 50 "blox.lex"
+#line 50 "./blox.lex"
 {adjust(); return EQ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 51 "blox.lex"
+#line 51 "./blox.lex"
 {adjust(); return NEQ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 52 "blox.lex"
+#line 52 "./blox.lex"
 {adjust(); return GT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 53 "blox.lex"
+#line 53 "./blox.lex"
 {adjust(); return LT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 54 "blox.lex"
+#line 54 "./blox.lex"
 {adjust(); return GE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 55 "blox.lex"
+#line 55 "./blox.lex"
 {adjust(); return LE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 56 "blox.lex"
+#line 56 "./blox.lex"
 {adjust(); return LBRACK;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 57 "blox.lex"
+#line 57 "./blox.lex"
 {adjust(); return RBRACK;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 58 "blox.lex"
+#line 58 "./blox.lex"
 {adjust(); return LPAREN;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 59 "blox.lex"
+#line 59 "./blox.lex"
 {adjust(); return RPAREN;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 60 "blox.lex"
+#line 60 "./blox.lex"
 {adjust(); yylval.ival=atoi(yytext); return INT;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 61 "blox.lex"
+#line 61 "./blox.lex"
 {adjust(); yylval.ival=atof(yytext); return FLOAT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 62 "blox.lex"
+#line 62 "./blox.lex"
 {adjust(); yylval.sval=String(yytext); return STRING;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 63 "blox.lex"
+#line 63 "./blox.lex"
 {adjust(); yylval.sval=String(yytext); return ID;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 65 "blox.lex"
+#line 65 "./blox.lex"
 ECHO;
 	YY_BREAK
 #line 922 "lex.yy.c"
@@ -1923,4 +1923,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 65 "blox.lex"
+#line 65 "./blox.lex"

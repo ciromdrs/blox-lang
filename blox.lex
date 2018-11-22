@@ -26,7 +26,7 @@ comment             #.*
 ignore              ({ws}|{comment})
 digit               [0-9]
 number              {digit}+
-real                {digit}+\.{digit}+
+real                {number}\.{number}
 string              ("\'".*"\'")
 alpha               [a-zA-Z]
 id                  ({alpha}|_)({alpha}|{digit}|_)*
