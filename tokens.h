@@ -7,7 +7,6 @@ typedef union  {
 extern YYSTYPE yylval;
 
 //  257 <= tok <= 299
-
 # define AND 257
 # define ARRAY 258
 # define ASSIGN 259
@@ -35,14 +34,13 @@ extern YYSTYPE yylval;
 # define MINUS 281
 # define NEQ 282
 # define NIL 283
-# define OR 284
-# define PLUS 285
-# define RBRACE 286
-# define RBRACK 287
-# define RPAREN 288
-# define SEMICOLON 289
-# define STRING 290
-# define TIMES 291
-
-
-
+# define NOT 284
+# define OR 285
+# define PLUS 286
+# define RBRACE 287
+# define RBRACK 288
+# define RETURN 289
+# define RPAREN 290
+# define SEMICOLON 291
+# define STRING 292
+# define TIMES 293

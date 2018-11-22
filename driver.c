@@ -11,7 +11,7 @@ int yylex(void); /* prototype for the lexing function */
 
 
 string toknames[] = {
-    "AND", "ARRAY", "ASSIGN", "BLOCK", "BREAK", "COLON", "COMMA", "CONTINUE", "DIVIDE", "DOT", "ELSE", "EQ", "FLOAT", "GE", "GT", "ID", "IF", "INT", "LBRACE", "LBRACK", "LE", "LOOP", "LPAREN", "LT", "MINUS", "NEQ", "NIL", "OR", "PLUS", "RBRACE", "RBRACK", "RPAREN", "SEMICOLON", "STRING", "TIMES"
+    "AND", "ARRAY", "ASSIGN", "BLOCK", "BREAK", "COLON", "COMMA", "CONTINUE", "DIVIDE", "DOT", "ELSE", "EQ", "FLOAT", "GE", "GT", "ID", "IF", "INT", "LBRACE", "LBRACK", "LE", "LOOP", "LPAREN", "LT", "MINUS", "NEQ", "NIL", "NOT", "OR", "PLUS", "RBRACE", "RBRACK", "RETURN", "RPAREN", "SEMICOLON", "STRING", "TIMES"
 };
 
 

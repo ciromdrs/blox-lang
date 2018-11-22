@@ -1,13 +1,3 @@
-# this is the block 'program'
-
-# overal syntax
-block block_name [(param1 type1, ...)] [return_type] [extends block_name] [{ stmts ... }]
-
-# examples
-block sum(a, b int) int {
-    return a+b
-}
-
 # block extending
 block perform_operation(a,b int) int {
     block operation int;
@@ -18,6 +8,8 @@ block perform_addition(a,b int) int extends perform_operation {
         return a+b
     }
 }
+
+
 
 # classes
 block MyClass {

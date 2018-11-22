@@ -40,6 +40,9 @@ invalid_id          {digit}+({alpha}|_)+
 "else"              {adjust(); return ELSE;}
 "block"             {adjust(); return BLOCK;}
 "loop"              {adjust(); return LOOP;}
+"not"               {adjust(); return NOT;}
+"and"               {adjust(); return AND;}
+"or"                {adjust(); return OR;}
 "="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
