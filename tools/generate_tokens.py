@@ -29,11 +29,14 @@ tokens = ["AND",
 "PLUS",
 "RBRACE",
 "RBRACK",
+"RETURN",
 "RPAREN",
 "SEMICOLON",
 "STRING",
 "TIMES"
 ]
+
+tokens.sort()
 
 for tok in tokens[:-1]:
     print('"'+tok+'",', end=' ')
