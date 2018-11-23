@@ -1,7 +1,7 @@
 # 'if' [ decl ';' ] condition stmt_or_block [ 'else' stmt_or_block ]
-if int i (i > 0) {
+if i int (i > 0) {
     # if will not run
-} else if int j := 1 (j < 10) {
+} else if j int = 1 (j < 10) {
     # else if will run
 } else {
     # else will not run

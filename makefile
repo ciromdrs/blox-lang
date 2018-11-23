@@ -25,5 +25,8 @@ lex.yy.o: lex.yy.c y.tab.h errormsg.h util.h
 util.o: util.c util.h
 	cc -g -c util.c
 
+test:
+	bash tools/run_tests.sh
+
 clean: 
 	rm -f a.out util.o parsetest.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o

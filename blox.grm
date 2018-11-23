@@ -20,16 +20,32 @@ void yyerror(char *s)
 
 %define parse.error verbose
 
-%token AND ARRAY ASSIGN BLOCK BREAK COLON COMMA CONTINUE DIVIDE DOT ELSE
-    EQ
+%token AND ARRAY ASSIGN BLOCK BREAK COLON COMMA CONTINUE
+
+%token DIVIDE
+
+%token DOT ELSE
+
+%token EQ 
+
 %token <fval> FLOAT
 %token GE GT
 %token <sval> ID
 %token IF
 %token <ival> INT
-%token LBRACE LBRACK LE LOOP LPAREN LT MINUS NEQ NIL NOT OR PLUS
-  RBRACE RBRACK RETURN RPAREN SEMICOLON
+%token LBRACE LBRACK LE LOOP LPAREN LT
+
+%token MINUS
+
+%token NEQ
+ 
+%token NIL
+
+%token NOT OR PLUS
+
+%token RBRACE RBRACK RETURN RPAREN SEMICOLON
 %token <sval> STRING
+
 %token TIMES
   
 %start program
@@ -50,7 +66,7 @@ decl: ID type decl_init_opt
 
 type: ID
 
-decl_opt: decl COLON
+decl_opt: decl
     | %empty
 
 decl_init_opt: decl_init
@@ -75,7 +91,6 @@ formal_params_opt: LPAREN formal_params RPAREN
     | %empty
 
 formal_params: param more_formal_params
-    | %empty
 
 more_formal_params: COMMA formal_params
     | %empty
@@ -91,6 +106,18 @@ stmts: stmt colon_opt stmts
     | %empty
 
 stmt: func_call
+    | assign
+    | decl
+    | if
+
+if: IF decl_opt condition stmt_or_stmt_block else_opt
+
+condition: LPAREN exp RPAREN
+
+else_opt: ELSE stmt_or_stmt_block
+    | %empty
+
+assign: ID ASSIGN exp
 
 func_call: ID LPAREN actual_params RPAREN
 
@@ -103,6 +130,14 @@ more_exps: COMMA exps
     | %empty
 
 exp: literal
+    | ID
+    | LPAREN exp RPAREN
+    | exp binop exp
+    | unop exp
+
+binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR
+
+unop: MINUS | NOT
 
 literal: STRING
     | INT
