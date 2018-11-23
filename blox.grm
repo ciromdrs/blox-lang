@@ -38,78 +38,71 @@ void yyerror(char *s)
 
 program: block_body
 
-block_body: block_defs
-    | stmts
+block_body: block_defs_opt stmts
 
-block_defs: block_def block_defs
+block_defs_opt: block_def block_defs_opt
     | %empty
 
-decl: ID ID decl_init_opt
+colon_opt: COLON
+    | %empty
+
+decl: ID type decl_init_opt
+
+type: ID
+
+decl_opt: decl COLON
+    | %empty
 
 decl_init_opt: decl_init
     | %empty
 
 decl_init: ASSIGN exp
-    
 
-block_def: BLOCK ID formal_params_opt id_opt stmt_block_opt
+block_def: BLOCK ID formal_params_opt return_type stmt_block_opt
 
 stmt_block_opt : stmt_block
     | %empty
 
-id_opt: ID
+stmt_or_stmt_block_opt : stmt_or_stmt_block
     | %empty
+
+return_type_opt: return_type
+    | %empty
+
+return_type: ID 
 
 formal_params_opt: LPAREN formal_params RPAREN
     | %empty
 
-formal_params: param formal_params
+formal_params: param more_formal_params
+    | %empty
+
+more_formal_params: COMMA formal_params
     | %empty
 
 param: decl
 
-stmt_block: LBRACK stmts RBRACK
+stmt_or_stmt_block: stmt_block
     | stmt
 
-stmts: stmt stmts
+stmt_block: LBRACK stmts RBRACK
+
+stmts: stmt colon_opt stmts
     | %empty
 
 stmt: func_call
-    | if_stmt
-
-if_stmt: IF quick_decl_opt bool_exp stmt_block else_opt
-
-quick_decl_opt: decl COLON
-    | %empty
-
-else_opt: ELSE stmt_block
-    | %empty
 
 func_call: ID LPAREN actual_params RPAREN
 
 actual_params: exps
 
-exps: exp comma_exps
+exps: exp more_exps
     | %empty
 
-comma_exps: COMMA exps
+more_exps: COMMA exps
     | %empty
 
 exp: literal
-    | ID
-    | math_exp
-    | bool_exp
-
-math_exp: exp math_op exp
-
-math_op: PLUS | MINUS
-
-bool_exp: exp bool_binop exp
-    | bool_unop bool_exp
-
-bool_unop: NOT
-    
-bool_binop: EQ | NEQ | GT | GE | LT | LE
 
 literal: STRING
     | INT
