@@ -1,0 +1,116 @@
+%{
+#include <stdio.h>
+#include "util.h"
+#include "errormsg.h"
+
+int yylex(void); /* function prototype */
+
+void yyerror(char *s)
+{
+ EM_error(EM_tokPos, "%s", s);
+}
+%}
+
+%union {
+	int pos;
+	int ival;
+    double fval;
+	string sval;
+	}
+
+%define parse.error verbose
+
+%token AND ARRAY ASSIGN BLOCK BREAK COLON COMMA CONTINUE DIVIDE DOT ELSE
+    EQ
+%token <fval> FLOAT
+%token GE GT
+%token <sval> ID
+%token IF
+%token <ival> INT
+%token LBRACE LBRACK LE LOOP LPAREN LT MINUS NEQ NIL NOT OR PLUS
+  RBRACE RBRACK RETURN RPAREN SEMICOLON
+%token <sval> STRING
+%token TIMES
+  
+%start program
+
+%%
+
+program: block_body
+
+block_body: block_defs
+    | stmts
+
+block_defs: block_def block_defs
+    | %empty
+
+decl: ID ID decl_init_opt
+
+decl_init_opt: decl_init
+    | %empty
+
+decl_init: ASSIGN exp
+    
+
+block_def: BLOCK ID formal_params_opt id_opt stmt_block_opt
+
+stmt_block_opt : stmt_block
+    | %empty
+
+id_opt: ID
+    | %empty
+
+formal_params_opt: LPAREN formal_params RPAREN
+    | %empty
+
+formal_params: param formal_params
+    | %empty
+
+param: decl
+
+stmt_block: LBRACK stmts RBRACK
+    | stmt
+
+stmts: stmt stmts
+    | %empty
+
+stmt: func_call
+    | if_stmt
+
+if_stmt: IF quick_decl_opt bool_exp stmt_block else_opt
+
+quick_decl_opt: decl COLON
+    | %empty
+
+else_opt: ELSE stmt_block
+    | %empty
+
+func_call: ID LPAREN actual_params RPAREN
+
+actual_params: exps
+
+exps: exp comma_exps
+    | %empty
+
+comma_exps: COMMA exps
+    | %empty
+
+exp: literal
+    | ID
+    | math_exp
+    | bool_exp
+
+math_exp: exp math_op exp
+
+math_op: PLUS | MINUS
+
+bool_exp: exp bool_binop exp
+    | bool_unop bool_exp
+
+bool_unop: NOT
+    
+bool_binop: EQ | NEQ | GT | GE | LT | LE
+
+literal: STRING
+    | INT
+    | FLOAT

@@ -44,4 +44,4 @@ for tok in tokens[:-1]:
 print('"'+tokens[-1]+'"')
 
 for i, tok in enumerate (tokens):
-    print("# define", tok, i+257)
+    print("# define", tok, i+258)
