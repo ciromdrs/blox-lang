@@ -37,6 +37,7 @@ invalid_id          {digit}+({alpha}|_)+
 {comment}           {adjust(); continue;}
 "\n"                {adjust(); EM_newline(); continue;}
 "if"                {adjust(); return IF;}
+"elif"              {adjust(); return ELIF;}
 "else"              {adjust(); return ELSE;}
 "block"             {adjust(); return BLOCK;}
 "loop"              {adjust(); return LOOP;}
