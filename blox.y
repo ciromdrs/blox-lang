@@ -20,47 +20,37 @@ void yyerror(char *s)
 
 %define parse.error verbose
 
-%token AND ASSIGN BLOCK BREAK COLON COMMA CONTINUE
-
-%token DIVIDE
-
-%token DOT ELIF ELSE
-
-%token EQ 
-
+%token AND ASSIGN BLOCK BREAK COLON COMMA CONTINUE DIVIDE DOT ELIF ELSE
+  EQ GE GT IF LBRACE LBRACK LE LOOP LPAREN LT MINUS NEQ NIL NOT OR PLUS
+  RBRACE RBRACK RETURN RPAREN SEMICOLON TIMES
 %token <fval> FLOAT
-%token GE GT
 %token <sval> ID
-%token IF
 %token <ival> INT
-%token LBRACE LBRACK LE LOOP LPAREN LT
-
-%token MINUS
-
-%token NEQ
- 
-%token NIL
-
-%token NOT OR PLUS
-
-%token RBRACE RBRACK RETURN RPAREN SEMICOLON
 %token <sval> STRING
-
-%token TIMES
   
-%start program
+%start block
 
 %%
 
-program: block_body
+block: defs_opt stmts
 
-block_body: block_defs_opt stmts
+bracketed_block: LBRACK block RBRACK
 
-block_defs_opt: block_def block_defs_opt
+bracketed_block_opt: bracketed_block
+    | %empty
+
+defs_opt: def defs_opt
     | %empty
 
 colon_opt: COLON
     | %empty
+
+def: BLOCK ID formal_params_opt return_type_opt bracketed_block_opt
+
+return_type_opt: return_type
+    | %empty
+
+return_type: type 
 
 decl: ID type decl_init_opt
 
@@ -74,19 +64,6 @@ decl_init_opt: decl_init
 
 decl_init: ASSIGN exp
 
-block_def: BLOCK ID formal_params_opt return_type_opt stmt_block_opt
-
-stmt_block_opt : stmt_block
-    | %empty
-
-stmt_or_stmt_block_opt : stmt_or_stmt_block
-    | %empty
-
-return_type_opt: return_type
-    | %empty
-
-return_type: ID 
-
 formal_params_opt: LPAREN formal_params RPAREN
     | %empty
 
@@ -96,9 +73,6 @@ more_formal_params: COMMA formal_params
     | %empty
 
 param: decl
-
-stmt_or_stmt_block: stmt_block
-    | stmt
 
 stmt_block: LBRACK stmts RBRACK
 
@@ -113,24 +87,25 @@ stmt: func_call
     | continue
     | break
     | return
+    | stmt_block
 
 return: RETURN exp
 
-loop: LOOP decl_opt condition stmt_or_stmt_block
-    | LOOP decl_opt stmt_or_stmt_block condition
+loop: LOOP decl_opt condition stmt
+    | LOOP decl_opt stmt condition
 
 continue: CONTINUE
 
 break: BREAK
 
-if: IF decl_opt condition stmt_or_stmt_block elif_opt
+if: IF decl_opt condition stmt elif_opt
 
 condition: LPAREN exp RPAREN
 
-elif_opt: ELIF decl_opt condition stmt_or_stmt_block elif_opt
+elif_opt: ELIF decl_opt condition stmt elif_opt
     | else_opt
 
-else_opt: ELSE stmt_or_stmt_block
+else_opt: ELSE stmt
     | %empty
 
 assign: ID ASSIGN exp
@@ -150,6 +125,7 @@ exp: literal
     | LPAREN exp RPAREN
     | exp binop exp
     | unop exp
+    | func_call
 
 binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR
 

@@ -57,31 +57,31 @@ extern int yydebug;
     ELIF = 267,
     ELSE = 268,
     EQ = 269,
-    FLOAT = 270,
-    GE = 271,
-    GT = 272,
-    ID = 273,
-    IF = 274,
-    INT = 275,
-    LBRACE = 276,
-    LBRACK = 277,
-    LE = 278,
-    LOOP = 279,
-    LPAREN = 280,
-    LT = 281,
-    MINUS = 282,
-    NEQ = 283,
-    NIL = 284,
-    NOT = 285,
-    OR = 286,
-    PLUS = 287,
-    RBRACE = 288,
-    RBRACK = 289,
-    RETURN = 290,
-    RPAREN = 291,
-    SEMICOLON = 292,
-    STRING = 293,
-    TIMES = 294
+    GE = 270,
+    GT = 271,
+    IF = 272,
+    LBRACE = 273,
+    LBRACK = 274,
+    LE = 275,
+    LOOP = 276,
+    LPAREN = 277,
+    LT = 278,
+    MINUS = 279,
+    NEQ = 280,
+    NIL = 281,
+    NOT = 282,
+    OR = 283,
+    PLUS = 284,
+    RBRACE = 285,
+    RBRACK = 286,
+    RETURN = 287,
+    RPAREN = 288,
+    SEMICOLON = 289,
+    TIMES = 290,
+    FLOAT = 291,
+    ID = 292,
+    INT = 293,
+    STRING = 294
   };
 #endif
 /* Tokens.  */
@@ -97,31 +97,31 @@ extern int yydebug;
 #define ELIF 267
 #define ELSE 268
 #define EQ 269
-#define FLOAT 270
-#define GE 271
-#define GT 272
-#define ID 273
-#define IF 274
-#define INT 275
-#define LBRACE 276
-#define LBRACK 277
-#define LE 278
-#define LOOP 279
-#define LPAREN 280
-#define LT 281
-#define MINUS 282
-#define NEQ 283
-#define NIL 284
-#define NOT 285
-#define OR 286
-#define PLUS 287
-#define RBRACE 288
-#define RBRACK 289
-#define RETURN 290
-#define RPAREN 291
-#define SEMICOLON 292
-#define STRING 293
-#define TIMES 294
+#define GE 270
+#define GT 271
+#define IF 272
+#define LBRACE 273
+#define LBRACK 274
+#define LE 275
+#define LOOP 276
+#define LPAREN 277
+#define LT 278
+#define MINUS 279
+#define NEQ 280
+#define NIL 281
+#define NOT 282
+#define OR 283
+#define PLUS 284
+#define RBRACE 285
+#define RBRACK 286
+#define RETURN 287
+#define RPAREN 288
+#define SEMICOLON 289
+#define TIMES 290
+#define FLOAT 291
+#define ID 292
+#define INT 293
+#define STRING 294
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
