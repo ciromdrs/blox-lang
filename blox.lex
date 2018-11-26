@@ -2,8 +2,8 @@
 #include <string.h>
 #include "util.h"
 #include <stdlib.h>
-#include "tokens.h"
 #include "errormsg.h"
+#include "y.tab.h"
 
 int charPos=1;
 
@@ -44,6 +44,7 @@ invalid_id          {digit}+({alpha}|_)+
 "not"               {adjust(); return NOT;}
 "and"               {adjust(); return AND;}
 "or"                {adjust(); return OR;}
+"return"            {adjust(); return RETURN;}
 "="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}

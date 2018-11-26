@@ -20,7 +20,7 @@ void yyerror(char *s)
 
 %define parse.error verbose
 
-%token AND ARRAY ASSIGN BLOCK BREAK COLON COMMA CONTINUE
+%token AND ASSIGN BLOCK BREAK COLON COMMA CONTINUE
 
 %token DIVIDE
 
@@ -112,6 +112,9 @@ stmt: func_call
     | loop
     | continue
     | break
+    | return
+
+return: RETURN exp
 
 loop: LOOP decl_opt condition stmt_or_stmt_block
     | LOOP decl_opt stmt_or_stmt_block condition

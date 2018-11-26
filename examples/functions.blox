@@ -2,6 +2,6 @@
 # block block_name [(param1 type1, ...)] [return_type] [extends block_name] [{ stmts ... }]
 
 # examples
-block sum(a, b int) int {
+block sum(a int, b int) int {
     return a+b
 }

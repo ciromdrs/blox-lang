@@ -7,8 +7,8 @@ parsetest.o: parsetest.c errormsg.h util.h
 y.tab.o: y.tab.c
 	cc -g -c y.tab.c
 
-y.tab.c: blox.grm
-	yacc -dvtW blox.grm
+y.tab.c: blox.y
+	yacc -d -y blox.y
 
 y.tab.h: y.tab.c
 	echo "y.tab.h was created at the same time as y.tab.c"
@@ -19,8 +19,8 @@ errormsg.o: errormsg.c errormsg.h util.h
 lex.yy.o: lex.yy.c y.tab.h errormsg.h util.h
 	cc -g -c lex.yy.c
 
-#lex.yy.c: blox.lex # (add this to clean:)
-#	lex blox.lex
+lex.yy.c: blox.lex # (add this to clean:)
+	lex blox.lex
 
 util.o: util.c util.h
 	cc -g -c util.c

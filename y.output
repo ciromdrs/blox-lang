@@ -1,0 +1,1547 @@
+Não-terminais inúteis na gramática
+
+   stmt_or_stmt_block_opt
+
+
+Terminais sem uso na gramática
+
+   DOT
+   LBRACE
+   NIL
+   RBRACE
+   SEMICOLON
+
+
+Regras inúteis na gramática
+
+   79 stmt_or_stmt_block_opt: stmt_or_stmt_block
+   80                       | %empty
+
+
+Estado 12 conflitos: 1 de deslocamento/redução
+Estado 26 conflitos: 1 de deslocamento/redução
+Estado 81 conflitos: 12 de deslocamento/redução
+Estado 93 conflitos: 2 de deslocamento/redução
+Estado 98 conflitos: 12 de deslocamento/redução
+Estado 110 conflitos: 2 de deslocamento/redução
+
+
+Gramática
+
+    0 $accept: program $end
+
+    1 program: block_body
+
+    2 block_body: block_defs_opt stmts
+
+    3 block_defs_opt: block_def block_defs_opt
+    4               | %empty
+
+    5 colon_opt: COLON
+    6          | %empty
+
+    7 decl: ID type decl_init_opt
+
+    8 type: ID
+
+    9 decl_opt: decl
+   10         | %empty
+
+   11 decl_init_opt: decl_init
+   12              | %empty
+
+   13 decl_init: ASSIGN exp
+
+   14 block_def: BLOCK ID formal_params_opt return_type_opt stmt_block_opt
+
+   15 stmt_block_opt: stmt_block
+   16               | %empty
+
+   17 return_type_opt: return_type
+   18                | %empty
+
+   19 return_type: ID
+
+   20 formal_params_opt: LPAREN formal_params RPAREN
+   21                  | %empty
+
+   22 formal_params: param more_formal_params
+
+   23 more_formal_params: COMMA formal_params
+   24                   | %empty
+
+   25 param: decl
+
+   26 stmt_or_stmt_block: stmt_block
+   27                   | stmt
+
+   28 stmt_block: LBRACK stmts RBRACK
+
+   29 stmts: stmt colon_opt stmts
+   30      | %empty
+
+   31 stmt: func_call
+   32     | assign
+   33     | decl
+   34     | if
+   35     | loop
+   36     | continue
+   37     | break
+   38     | return
+
+   39 return: RETURN exp
+
+   40 loop: LOOP decl_opt condition stmt_or_stmt_block
+   41     | LOOP decl_opt stmt_or_stmt_block condition
+
+   42 continue: CONTINUE
+
+   43 break: BREAK
+
+   44 if: IF decl_opt condition stmt_or_stmt_block elif_opt
+
+   45 condition: LPAREN exp RPAREN
+
+   46 elif_opt: ELIF decl_opt condition stmt_or_stmt_block elif_opt
+   47         | else_opt
+
+   48 else_opt: ELSE stmt_or_stmt_block
+   49         | %empty
+
+   50 assign: ID ASSIGN exp
+
+   51 func_call: ID LPAREN actual_params RPAREN
+
+   52 actual_params: exps
+
+   53 exps: exp more_exps
+   54     | %empty
+
+   55 more_exps: COMMA exps
+   56          | %empty
+
+   57 exp: literal
+   58    | ID
+   59    | LPAREN exp RPAREN
+   60    | exp binop exp
+   61    | unop exp
+
+   62 binop: PLUS
+   63      | MINUS
+   64      | TIMES
+   65      | DIVIDE
+   66      | EQ
+   67      | NEQ
+   68      | GT
+   69      | GE
+   70      | LT
+   71      | LE
+   72      | AND
+   73      | OR
+
+   74 unop: MINUS
+   75     | NOT
+
+   76 literal: STRING
+   77        | INT
+   78        | FLOAT
+
+
+Terminais, com as regras onde eles aparecem
+
+$end (0) 0
+error (256)
+AND (258) 72
+ASSIGN (259) 13 50
+BLOCK (260) 14
+BREAK (261) 43
+COLON (262) 5
+COMMA (263) 23 55
+CONTINUE (264) 42
+DIVIDE (265) 65
+DOT (266)
+ELIF (267) 46
+ELSE (268) 48
+EQ (269) 66
+FLOAT (270) 78
+GE (271) 69
+GT (272) 68
+ID (273) 7 8 14 19 50 51 58
+IF (274) 44
+INT (275) 77
+LBRACE (276)
+LBRACK (277) 28
+LE (278) 71
+LOOP (279) 40 41
+LPAREN (280) 20 45 51 59
+LT (281) 70
+MINUS (282) 63 74
+NEQ (283) 67
+NIL (284)
+NOT (285) 75
+OR (286) 73
+PLUS (287) 62
+RBRACE (288)
+RBRACK (289) 28
+RETURN (290) 39
+RPAREN (291) 20 45 51 59
+SEMICOLON (292)
+STRING (293) 76
+TIMES (294) 64
+
+
+Não terminais com as regras onde eles aparecem
+
+$accept (40)
+    à esquerda: 0
+program (41)
+    à esquerda: 1, à direita: 0
+block_body (42)
+    à esquerda: 2, à direita: 1
+block_defs_opt (43)
+    à esquerda: 3 4, à direita: 2 3
+colon_opt (44)
+    à esquerda: 5 6, à direita: 29
+decl (45)
+    à esquerda: 7, à direita: 9 25 33
+type (46)
+    à esquerda: 8, à direita: 7
+decl_opt (47)
+    à esquerda: 9 10, à direita: 40 41 44 46
+decl_init_opt (48)
+    à esquerda: 11 12, à direita: 7
+decl_init (49)
+    à esquerda: 13, à direita: 11
+block_def (50)
+    à esquerda: 14, à direita: 3
+stmt_block_opt (51)
+    à esquerda: 15 16, à direita: 14
+return_type_opt (52)
+    à esquerda: 17 18, à direita: 14
+return_type (53)
+    à esquerda: 19, à direita: 17
+formal_params_opt (54)
+    à esquerda: 20 21, à direita: 14
+formal_params (55)
+    à esquerda: 22, à direita: 20 23
+more_formal_params (56)
+    à esquerda: 23 24, à direita: 22
+param (57)
+    à esquerda: 25, à direita: 22
+stmt_or_stmt_block (58)
+    à esquerda: 26 27, à direita: 40 41 44 46 48
+stmt_block (59)
+    à esquerda: 28, à direita: 15 26
+stmts (60)
+    à esquerda: 29 30, à direita: 2 28 29
+stmt (61)
+    à esquerda: 31 32 33 34 35 36 37 38, à direita: 27 29
+return (62)
+    à esquerda: 39, à direita: 38
+loop (63)
+    à esquerda: 40 41, à direita: 35
+continue (64)
+    à esquerda: 42, à direita: 36
+break (65)
+    à esquerda: 43, à direita: 37
+if (66)
+    à esquerda: 44, à direita: 34
+condition (67)
+    à esquerda: 45, à direita: 40 41 44 46
+elif_opt (68)
+    à esquerda: 46 47, à direita: 44 46
+else_opt (69)
+    à esquerda: 48 49, à direita: 47
+assign (70)
+    à esquerda: 50, à direita: 32
+func_call (71)
+    à esquerda: 51, à direita: 31
+actual_params (72)
+    à esquerda: 52, à direita: 51
+exps (73)
+    à esquerda: 53 54, à direita: 52 55
+more_exps (74)
+    à esquerda: 55 56, à direita: 53
+exp (75)
+    à esquerda: 57 58 59 60 61, à direita: 13 39 45 50 53 59 60 61
+binop (76)
+    à esquerda: 62 63 64 65 66 67 68 69 70 71 72 73, à direita: 60
+unop (77)
+    à esquerda: 74 75, à direita: 61
+literal (78)
+    à esquerda: 76 77 78, à direita: 57
+
+
+Estado 0
+
+    0 $accept: . program $end
+
+    BLOCK  deslocar, e ir ao estado 1
+
+    $padrão  reduzir usando a regra 4 (block_defs_opt)
+
+    program         ir ao estado 2
+    block_body      ir ao estado 3
+    block_defs_opt  ir ao estado 4
+    block_def       ir ao estado 5
+
+
+Estado 1
+
+   14 block_def: BLOCK . ID formal_params_opt return_type_opt stmt_block_opt
+
+    ID  deslocar, e ir ao estado 6
+
+
+Estado 2
+
+    0 $accept: program . $end
+
+    $end  deslocar, e ir ao estado 7
+
+
+Estado 3
+
+    1 program: block_body .
+
+    $padrão  reduzir usando a regra 1 (program)
+
+
+Estado 4
+
+    2 block_body: block_defs_opt . stmts
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 30 (stmts)
+
+    decl       ir ao estado 14
+    stmts      ir ao estado 15
+    stmt       ir ao estado 16
+    return     ir ao estado 17
+    loop       ir ao estado 18
+    continue   ir ao estado 19
+    break      ir ao estado 20
+    if         ir ao estado 21
+    assign     ir ao estado 22
+    func_call  ir ao estado 23
+
+
+Estado 5
+
+    3 block_defs_opt: block_def . block_defs_opt
+
+    BLOCK  deslocar, e ir ao estado 1
+
+    $padrão  reduzir usando a regra 4 (block_defs_opt)
+
+    block_defs_opt  ir ao estado 24
+    block_def       ir ao estado 5
+
+
+Estado 6
+
+   14 block_def: BLOCK ID . formal_params_opt return_type_opt stmt_block_opt
+
+    LPAREN  deslocar, e ir ao estado 25
+
+    $padrão  reduzir usando a regra 21 (formal_params_opt)
+
+    formal_params_opt  ir ao estado 26
+
+
+Estado 7
+
+    0 $accept: program $end .
+
+    $padrão  aceitar
+
+
+Estado 8
+
+   43 break: BREAK .
+
+    $padrão  reduzir usando a regra 43 (break)
+
+
+Estado 9
+
+   42 continue: CONTINUE .
+
+    $padrão  reduzir usando a regra 42 (continue)
+
+
+Estado 10
+
+    7 decl: ID . type decl_init_opt
+   50 assign: ID . ASSIGN exp
+   51 func_call: ID . LPAREN actual_params RPAREN
+
+    ASSIGN  deslocar, e ir ao estado 27
+    ID      deslocar, e ir ao estado 28
+    LPAREN  deslocar, e ir ao estado 29
+
+    type  ir ao estado 30
+
+
+Estado 11
+
+   44 if: IF . decl_opt condition stmt_or_stmt_block elif_opt
+
+    ID  deslocar, e ir ao estado 31
+
+    $padrão  reduzir usando a regra 10 (decl_opt)
+
+    decl      ir ao estado 32
+    decl_opt  ir ao estado 33
+
+
+Estado 12
+
+   40 loop: LOOP . decl_opt condition stmt_or_stmt_block
+   41     | LOOP . decl_opt stmt_or_stmt_block condition
+
+    ID  deslocar, e ir ao estado 31
+
+    ID        [reduzir usando a regra 10 (decl_opt)]
+    $padrão  reduzir usando a regra 10 (decl_opt)
+
+    decl      ir ao estado 32
+    decl_opt  ir ao estado 34
+
+
+Estado 13
+
+   39 return: RETURN . exp
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 42
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 14
+
+   33 stmt: decl .
+
+    $padrão  reduzir usando a regra 33 (stmt)
+
+
+Estado 15
+
+    2 block_body: block_defs_opt stmts .
+
+    $padrão  reduzir usando a regra 2 (block_body)
+
+
+Estado 16
+
+   29 stmts: stmt . colon_opt stmts
+
+    COLON  deslocar, e ir ao estado 45
+
+    $padrão  reduzir usando a regra 6 (colon_opt)
+
+    colon_opt  ir ao estado 46
+
+
+Estado 17
+
+   38 stmt: return .
+
+    $padrão  reduzir usando a regra 38 (stmt)
+
+
+Estado 18
+
+   35 stmt: loop .
+
+    $padrão  reduzir usando a regra 35 (stmt)
+
+
+Estado 19
+
+   36 stmt: continue .
+
+    $padrão  reduzir usando a regra 36 (stmt)
+
+
+Estado 20
+
+   37 stmt: break .
+
+    $padrão  reduzir usando a regra 37 (stmt)
+
+
+Estado 21
+
+   34 stmt: if .
+
+    $padrão  reduzir usando a regra 34 (stmt)
+
+
+Estado 22
+
+   32 stmt: assign .
+
+    $padrão  reduzir usando a regra 32 (stmt)
+
+
+Estado 23
+
+   31 stmt: func_call .
+
+    $padrão  reduzir usando a regra 31 (stmt)
+
+
+Estado 24
+
+    3 block_defs_opt: block_def block_defs_opt .
+
+    $padrão  reduzir usando a regra 3 (block_defs_opt)
+
+
+Estado 25
+
+   20 formal_params_opt: LPAREN . formal_params RPAREN
+
+    ID  deslocar, e ir ao estado 31
+
+    decl           ir ao estado 47
+    formal_params  ir ao estado 48
+    param          ir ao estado 49
+
+
+Estado 26
+
+   14 block_def: BLOCK ID formal_params_opt . return_type_opt stmt_block_opt
+
+    ID  deslocar, e ir ao estado 50
+
+    ID        [reduzir usando a regra 18 (return_type_opt)]
+    $padrão  reduzir usando a regra 18 (return_type_opt)
+
+    return_type_opt  ir ao estado 51
+    return_type      ir ao estado 52
+
+
+Estado 27
+
+   50 assign: ID ASSIGN . exp
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 53
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 28
+
+    8 type: ID .
+
+    $padrão  reduzir usando a regra 8 (type)
+
+
+Estado 29
+
+   51 func_call: ID LPAREN . actual_params RPAREN
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    $padrão  reduzir usando a regra 54 (exps)
+
+    actual_params  ir ao estado 54
+    exps           ir ao estado 55
+    exp            ir ao estado 56
+    unop           ir ao estado 43
+    literal        ir ao estado 44
+
+
+Estado 30
+
+    7 decl: ID type . decl_init_opt
+
+    ASSIGN  deslocar, e ir ao estado 57
+
+    $padrão  reduzir usando a regra 12 (decl_init_opt)
+
+    decl_init_opt  ir ao estado 58
+    decl_init      ir ao estado 59
+
+
+Estado 31
+
+    7 decl: ID . type decl_init_opt
+
+    ID  deslocar, e ir ao estado 28
+
+    type  ir ao estado 30
+
+
+Estado 32
+
+    9 decl_opt: decl .
+
+    $padrão  reduzir usando a regra 9 (decl_opt)
+
+
+Estado 33
+
+   44 if: IF decl_opt . condition stmt_or_stmt_block elif_opt
+
+    LPAREN  deslocar, e ir ao estado 60
+
+    condition  ir ao estado 61
+
+
+Estado 34
+
+   40 loop: LOOP decl_opt . condition stmt_or_stmt_block
+   41     | LOOP decl_opt . stmt_or_stmt_block condition
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LBRACK    deslocar, e ir ao estado 62
+    LOOP      deslocar, e ir ao estado 12
+    LPAREN    deslocar, e ir ao estado 60
+    RETURN    deslocar, e ir ao estado 13
+
+    decl                ir ao estado 14
+    stmt_or_stmt_block  ir ao estado 63
+    stmt_block          ir ao estado 64
+    stmt                ir ao estado 65
+    return              ir ao estado 17
+    loop                ir ao estado 18
+    continue            ir ao estado 19
+    break               ir ao estado 20
+    if                  ir ao estado 21
+    condition           ir ao estado 66
+    assign              ir ao estado 22
+    func_call           ir ao estado 23
+
+
+Estado 35
+
+   78 literal: FLOAT .
+
+    $padrão  reduzir usando a regra 78 (literal)
+
+
+Estado 36
+
+   58 exp: ID .
+
+    $padrão  reduzir usando a regra 58 (exp)
+
+
+Estado 37
+
+   77 literal: INT .
+
+    $padrão  reduzir usando a regra 77 (literal)
+
+
+Estado 38
+
+   59 exp: LPAREN . exp RPAREN
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 67
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 39
+
+   74 unop: MINUS .
+
+    $padrão  reduzir usando a regra 74 (unop)
+
+
+Estado 40
+
+   75 unop: NOT .
+
+    $padrão  reduzir usando a regra 75 (unop)
+
+
+Estado 41
+
+   76 literal: STRING .
+
+    $padrão  reduzir usando a regra 76 (literal)
+
+
+Estado 42
+
+   39 return: RETURN exp .
+   60 exp: exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    $padrão  reduzir usando a regra 39 (return)
+
+    binop  ir ao estado 80
+
+
+Estado 43
+
+   61 exp: unop . exp
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 81
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 44
+
+   57 exp: literal .
+
+    $padrão  reduzir usando a regra 57 (exp)
+
+
+Estado 45
+
+    5 colon_opt: COLON .
+
+    $padrão  reduzir usando a regra 5 (colon_opt)
+
+
+Estado 46
+
+   29 stmts: stmt colon_opt . stmts
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 30 (stmts)
+
+    decl       ir ao estado 14
+    stmts      ir ao estado 82
+    stmt       ir ao estado 16
+    return     ir ao estado 17
+    loop       ir ao estado 18
+    continue   ir ao estado 19
+    break      ir ao estado 20
+    if         ir ao estado 21
+    assign     ir ao estado 22
+    func_call  ir ao estado 23
+
+
+Estado 47
+
+   25 param: decl .
+
+    $padrão  reduzir usando a regra 25 (param)
+
+
+Estado 48
+
+   20 formal_params_opt: LPAREN formal_params . RPAREN
+
+    RPAREN  deslocar, e ir ao estado 83
+
+
+Estado 49
+
+   22 formal_params: param . more_formal_params
+
+    COMMA  deslocar, e ir ao estado 84
+
+    $padrão  reduzir usando a regra 24 (more_formal_params)
+
+    more_formal_params  ir ao estado 85
+
+
+Estado 50
+
+   19 return_type: ID .
+
+    $padrão  reduzir usando a regra 19 (return_type)
+
+
+Estado 51
+
+   14 block_def: BLOCK ID formal_params_opt return_type_opt . stmt_block_opt
+
+    LBRACK  deslocar, e ir ao estado 62
+
+    $padrão  reduzir usando a regra 16 (stmt_block_opt)
+
+    stmt_block_opt  ir ao estado 86
+    stmt_block      ir ao estado 87
+
+
+Estado 52
+
+   17 return_type_opt: return_type .
+
+    $padrão  reduzir usando a regra 17 (return_type_opt)
+
+
+Estado 53
+
+   50 assign: ID ASSIGN exp .
+   60 exp: exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    $padrão  reduzir usando a regra 50 (assign)
+
+    binop  ir ao estado 80
+
+
+Estado 54
+
+   51 func_call: ID LPAREN actual_params . RPAREN
+
+    RPAREN  deslocar, e ir ao estado 88
+
+
+Estado 55
+
+   52 actual_params: exps .
+
+    $padrão  reduzir usando a regra 52 (actual_params)
+
+
+Estado 56
+
+   53 exps: exp . more_exps
+   60 exp: exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    COMMA   deslocar, e ir ao estado 89
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    $padrão  reduzir usando a regra 56 (more_exps)
+
+    more_exps  ir ao estado 90
+    binop      ir ao estado 80
+
+
+Estado 57
+
+   13 decl_init: ASSIGN . exp
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 91
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 58
+
+    7 decl: ID type decl_init_opt .
+
+    $padrão  reduzir usando a regra 7 (decl)
+
+
+Estado 59
+
+   11 decl_init_opt: decl_init .
+
+    $padrão  reduzir usando a regra 11 (decl_init_opt)
+
+
+Estado 60
+
+   45 condition: LPAREN . exp RPAREN
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 92
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 61
+
+   44 if: IF decl_opt condition . stmt_or_stmt_block elif_opt
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LBRACK    deslocar, e ir ao estado 62
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    decl                ir ao estado 14
+    stmt_or_stmt_block  ir ao estado 93
+    stmt_block          ir ao estado 64
+    stmt                ir ao estado 65
+    return              ir ao estado 17
+    loop                ir ao estado 18
+    continue            ir ao estado 19
+    break               ir ao estado 20
+    if                  ir ao estado 21
+    assign              ir ao estado 22
+    func_call           ir ao estado 23
+
+
+Estado 62
+
+   28 stmt_block: LBRACK . stmts RBRACK
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 30 (stmts)
+
+    decl       ir ao estado 14
+    stmts      ir ao estado 94
+    stmt       ir ao estado 16
+    return     ir ao estado 17
+    loop       ir ao estado 18
+    continue   ir ao estado 19
+    break      ir ao estado 20
+    if         ir ao estado 21
+    assign     ir ao estado 22
+    func_call  ir ao estado 23
+
+
+Estado 63
+
+   41 loop: LOOP decl_opt stmt_or_stmt_block . condition
+
+    LPAREN  deslocar, e ir ao estado 60
+
+    condition  ir ao estado 95
+
+
+Estado 64
+
+   26 stmt_or_stmt_block: stmt_block .
+
+    $padrão  reduzir usando a regra 26 (stmt_or_stmt_block)
+
+
+Estado 65
+
+   27 stmt_or_stmt_block: stmt .
+
+    $padrão  reduzir usando a regra 27 (stmt_or_stmt_block)
+
+
+Estado 66
+
+   40 loop: LOOP decl_opt condition . stmt_or_stmt_block
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LBRACK    deslocar, e ir ao estado 62
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    decl                ir ao estado 14
+    stmt_or_stmt_block  ir ao estado 96
+    stmt_block          ir ao estado 64
+    stmt                ir ao estado 65
+    return              ir ao estado 17
+    loop                ir ao estado 18
+    continue            ir ao estado 19
+    break               ir ao estado 20
+    if                  ir ao estado 21
+    assign              ir ao estado 22
+    func_call           ir ao estado 23
+
+
+Estado 67
+
+   59 exp: LPAREN exp . RPAREN
+   60    | exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    RPAREN  deslocar, e ir ao estado 97
+    TIMES   deslocar, e ir ao estado 79
+
+    binop  ir ao estado 80
+
+
+Estado 68
+
+   72 binop: AND .
+
+    $padrão  reduzir usando a regra 72 (binop)
+
+
+Estado 69
+
+   65 binop: DIVIDE .
+
+    $padrão  reduzir usando a regra 65 (binop)
+
+
+Estado 70
+
+   66 binop: EQ .
+
+    $padrão  reduzir usando a regra 66 (binop)
+
+
+Estado 71
+
+   69 binop: GE .
+
+    $padrão  reduzir usando a regra 69 (binop)
+
+
+Estado 72
+
+   68 binop: GT .
+
+    $padrão  reduzir usando a regra 68 (binop)
+
+
+Estado 73
+
+   71 binop: LE .
+
+    $padrão  reduzir usando a regra 71 (binop)
+
+
+Estado 74
+
+   70 binop: LT .
+
+    $padrão  reduzir usando a regra 70 (binop)
+
+
+Estado 75
+
+   63 binop: MINUS .
+
+    $padrão  reduzir usando a regra 63 (binop)
+
+
+Estado 76
+
+   67 binop: NEQ .
+
+    $padrão  reduzir usando a regra 67 (binop)
+
+
+Estado 77
+
+   73 binop: OR .
+
+    $padrão  reduzir usando a regra 73 (binop)
+
+
+Estado 78
+
+   62 binop: PLUS .
+
+    $padrão  reduzir usando a regra 62 (binop)
+
+
+Estado 79
+
+   64 binop: TIMES .
+
+    $padrão  reduzir usando a regra 64 (binop)
+
+
+Estado 80
+
+   60 exp: exp binop . exp
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    exp      ir ao estado 98
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 81
+
+   60 exp: exp . binop exp
+   61    | unop exp .
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    AND       [reduzir usando a regra 61 (exp)]
+    DIVIDE    [reduzir usando a regra 61 (exp)]
+    EQ        [reduzir usando a regra 61 (exp)]
+    GE        [reduzir usando a regra 61 (exp)]
+    GT        [reduzir usando a regra 61 (exp)]
+    LE        [reduzir usando a regra 61 (exp)]
+    LT        [reduzir usando a regra 61 (exp)]
+    MINUS     [reduzir usando a regra 61 (exp)]
+    NEQ       [reduzir usando a regra 61 (exp)]
+    OR        [reduzir usando a regra 61 (exp)]
+    PLUS      [reduzir usando a regra 61 (exp)]
+    TIMES     [reduzir usando a regra 61 (exp)]
+    $padrão  reduzir usando a regra 61 (exp)
+
+    binop  ir ao estado 80
+
+
+Estado 82
+
+   29 stmts: stmt colon_opt stmts .
+
+    $padrão  reduzir usando a regra 29 (stmts)
+
+
+Estado 83
+
+   20 formal_params_opt: LPAREN formal_params RPAREN .
+
+    $padrão  reduzir usando a regra 20 (formal_params_opt)
+
+
+Estado 84
+
+   23 more_formal_params: COMMA . formal_params
+
+    ID  deslocar, e ir ao estado 31
+
+    decl           ir ao estado 47
+    formal_params  ir ao estado 99
+    param          ir ao estado 49
+
+
+Estado 85
+
+   22 formal_params: param more_formal_params .
+
+    $padrão  reduzir usando a regra 22 (formal_params)
+
+
+Estado 86
+
+   14 block_def: BLOCK ID formal_params_opt return_type_opt stmt_block_opt .
+
+    $padrão  reduzir usando a regra 14 (block_def)
+
+
+Estado 87
+
+   15 stmt_block_opt: stmt_block .
+
+    $padrão  reduzir usando a regra 15 (stmt_block_opt)
+
+
+Estado 88
+
+   51 func_call: ID LPAREN actual_params RPAREN .
+
+    $padrão  reduzir usando a regra 51 (func_call)
+
+
+Estado 89
+
+   55 more_exps: COMMA . exps
+
+    FLOAT   deslocar, e ir ao estado 35
+    ID      deslocar, e ir ao estado 36
+    INT     deslocar, e ir ao estado 37
+    LPAREN  deslocar, e ir ao estado 38
+    MINUS   deslocar, e ir ao estado 39
+    NOT     deslocar, e ir ao estado 40
+    STRING  deslocar, e ir ao estado 41
+
+    $padrão  reduzir usando a regra 54 (exps)
+
+    exps     ir ao estado 100
+    exp      ir ao estado 56
+    unop     ir ao estado 43
+    literal  ir ao estado 44
+
+
+Estado 90
+
+   53 exps: exp more_exps .
+
+    $padrão  reduzir usando a regra 53 (exps)
+
+
+Estado 91
+
+   13 decl_init: ASSIGN exp .
+   60 exp: exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    $padrão  reduzir usando a regra 13 (decl_init)
+
+    binop  ir ao estado 80
+
+
+Estado 92
+
+   45 condition: LPAREN exp . RPAREN
+   60 exp: exp . binop exp
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    RPAREN  deslocar, e ir ao estado 101
+    TIMES   deslocar, e ir ao estado 79
+
+    binop  ir ao estado 80
+
+
+Estado 93
+
+   44 if: IF decl_opt condition stmt_or_stmt_block . elif_opt
+
+    ELIF  deslocar, e ir ao estado 102
+    ELSE  deslocar, e ir ao estado 103
+
+    ELIF      [reduzir usando a regra 49 (else_opt)]
+    ELSE      [reduzir usando a regra 49 (else_opt)]
+    $padrão  reduzir usando a regra 49 (else_opt)
+
+    elif_opt  ir ao estado 104
+    else_opt  ir ao estado 105
+
+
+Estado 94
+
+   28 stmt_block: LBRACK stmts . RBRACK
+
+    RBRACK  deslocar, e ir ao estado 106
+
+
+Estado 95
+
+   41 loop: LOOP decl_opt stmt_or_stmt_block condition .
+
+    $padrão  reduzir usando a regra 41 (loop)
+
+
+Estado 96
+
+   40 loop: LOOP decl_opt condition stmt_or_stmt_block .
+
+    $padrão  reduzir usando a regra 40 (loop)
+
+
+Estado 97
+
+   59 exp: LPAREN exp RPAREN .
+
+    $padrão  reduzir usando a regra 59 (exp)
+
+
+Estado 98
+
+   60 exp: exp . binop exp
+   60    | exp binop exp .
+
+    AND     deslocar, e ir ao estado 68
+    DIVIDE  deslocar, e ir ao estado 69
+    EQ      deslocar, e ir ao estado 70
+    GE      deslocar, e ir ao estado 71
+    GT      deslocar, e ir ao estado 72
+    LE      deslocar, e ir ao estado 73
+    LT      deslocar, e ir ao estado 74
+    MINUS   deslocar, e ir ao estado 75
+    NEQ     deslocar, e ir ao estado 76
+    OR      deslocar, e ir ao estado 77
+    PLUS    deslocar, e ir ao estado 78
+    TIMES   deslocar, e ir ao estado 79
+
+    AND       [reduzir usando a regra 60 (exp)]
+    DIVIDE    [reduzir usando a regra 60 (exp)]
+    EQ        [reduzir usando a regra 60 (exp)]
+    GE        [reduzir usando a regra 60 (exp)]
+    GT        [reduzir usando a regra 60 (exp)]
+    LE        [reduzir usando a regra 60 (exp)]
+    LT        [reduzir usando a regra 60 (exp)]
+    MINUS     [reduzir usando a regra 60 (exp)]
+    NEQ       [reduzir usando a regra 60 (exp)]
+    OR        [reduzir usando a regra 60 (exp)]
+    PLUS      [reduzir usando a regra 60 (exp)]
+    TIMES     [reduzir usando a regra 60 (exp)]
+    $padrão  reduzir usando a regra 60 (exp)
+
+    binop  ir ao estado 80
+
+
+Estado 99
+
+   23 more_formal_params: COMMA formal_params .
+
+    $padrão  reduzir usando a regra 23 (more_formal_params)
+
+
+Estado 100
+
+   55 more_exps: COMMA exps .
+
+    $padrão  reduzir usando a regra 55 (more_exps)
+
+
+Estado 101
+
+   45 condition: LPAREN exp RPAREN .
+
+    $padrão  reduzir usando a regra 45 (condition)
+
+
+Estado 102
+
+   46 elif_opt: ELIF . decl_opt condition stmt_or_stmt_block elif_opt
+
+    ID  deslocar, e ir ao estado 31
+
+    $padrão  reduzir usando a regra 10 (decl_opt)
+
+    decl      ir ao estado 32
+    decl_opt  ir ao estado 107
+
+
+Estado 103
+
+   48 else_opt: ELSE . stmt_or_stmt_block
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LBRACK    deslocar, e ir ao estado 62
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    decl                ir ao estado 14
+    stmt_or_stmt_block  ir ao estado 108
+    stmt_block          ir ao estado 64
+    stmt                ir ao estado 65
+    return              ir ao estado 17
+    loop                ir ao estado 18
+    continue            ir ao estado 19
+    break               ir ao estado 20
+    if                  ir ao estado 21
+    assign              ir ao estado 22
+    func_call           ir ao estado 23
+
+
+Estado 104
+
+   44 if: IF decl_opt condition stmt_or_stmt_block elif_opt .
+
+    $padrão  reduzir usando a regra 44 (if)
+
+
+Estado 105
+
+   47 elif_opt: else_opt .
+
+    $padrão  reduzir usando a regra 47 (elif_opt)
+
+
+Estado 106
+
+   28 stmt_block: LBRACK stmts RBRACK .
+
+    $padrão  reduzir usando a regra 28 (stmt_block)
+
+
+Estado 107
+
+   46 elif_opt: ELIF decl_opt . condition stmt_or_stmt_block elif_opt
+
+    LPAREN  deslocar, e ir ao estado 60
+
+    condition  ir ao estado 109
+
+
+Estado 108
+
+   48 else_opt: ELSE stmt_or_stmt_block .
+
+    $padrão  reduzir usando a regra 48 (else_opt)
+
+
+Estado 109
+
+   46 elif_opt: ELIF decl_opt condition . stmt_or_stmt_block elif_opt
+
+    BREAK     deslocar, e ir ao estado 8
+    CONTINUE  deslocar, e ir ao estado 9
+    ID        deslocar, e ir ao estado 10
+    IF        deslocar, e ir ao estado 11
+    LBRACK    deslocar, e ir ao estado 62
+    LOOP      deslocar, e ir ao estado 12
+    RETURN    deslocar, e ir ao estado 13
+
+    decl                ir ao estado 14
+    stmt_or_stmt_block  ir ao estado 110
+    stmt_block          ir ao estado 64
+    stmt                ir ao estado 65
+    return              ir ao estado 17
+    loop                ir ao estado 18
+    continue            ir ao estado 19
+    break               ir ao estado 20
+    if                  ir ao estado 21
+    assign              ir ao estado 22
+    func_call           ir ao estado 23
+
+
+Estado 110
+
+   46 elif_opt: ELIF decl_opt condition stmt_or_stmt_block . elif_opt
+
+    ELIF  deslocar, e ir ao estado 102
+    ELSE  deslocar, e ir ao estado 103
+
+    ELIF      [reduzir usando a regra 49 (else_opt)]
+    ELSE      [reduzir usando a regra 49 (else_opt)]
+    $padrão  reduzir usando a regra 49 (else_opt)
+
+    elif_opt  ir ao estado 111
+    else_opt  ir ao estado 105
+
+
+Estado 111
+
+   46 elif_opt: ELIF decl_opt condition stmt_or_stmt_block elif_opt .
+
+    $padrão  reduzir usando a regra 46 (elif_opt)
