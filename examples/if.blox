@@ -1,6 +1,6 @@
 if i int (i > 0) {
     # if will not run
-} elif j int = 1 (j < 10) {
+} else if j int = 1 (j < 10) {
     # else if will run
 } else {
     # else will not run

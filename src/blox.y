@@ -20,13 +20,14 @@ void yyerror(char *s)
 
 %define parse.error verbose
 
-%token BLOCK BREAK COLON COMMA CONTINUE DOT IF LBRACE LBRACK LOOP
+%token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
   LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON SELF
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
 %token <sval> STRING
 %nonassoc IFX
+%nonassoc ELSIFX
 %nonassoc ELSE
 %left ASSIGN
 %left MINUS PLUS
@@ -44,15 +45,15 @@ block: defs_opt stmts
 bracketed_block: LBRACK block RBRACK
 
 defs_opt: defs_opt def
-    | %empty
+        | %empty
 
 colon_opt: COLON
-    | %empty
+         | %empty
 
 def: BLOCK ID formal_params_opt return_type_opt bracketed_block
 
 return_type_opt: return_type
-    | %empty
+               | %empty
 
 return_type: type 
 
@@ -61,27 +62,27 @@ decl: ID type decl_init_opt
 type: ID
 
 decl_opt: decl
-    | %empty
+        | %empty
 
 decl_init_opt: decl_init
-    | %empty
+             | %empty
 
 decl_init: ASSIGN exp
 
 formal_params_opt: LPAREN formal_params RPAREN
-    | %empty
+                 | %empty
 
 formal_params: more_formal_params param
 
 more_formal_params: formal_params COMMA
-    | %empty
+                  | %empty
 
 param: decl
 
 stmt_block: LBRACK stmts RBRACK
 
 stmts: stmts colon_opt stmt
-    | %empty
+     | %empty
 
 stmt: func_call
     | assign
@@ -91,22 +92,23 @@ stmt: func_call
     | continue
     | break
     | return
-    | stmt_block
 
 return: RETURN exp
 
-loop: LOOP decl_opt loop2
-loop2: condition stmt
-    | stmt condition
+loop: LOOP decl_opt condition stmt_block
+    | LOOP decl_opt stmt_block condition
 
 continue: CONTINUE
 
 break: BREAK
 
-if: IF decl_opt condition stmt %prec IFX
-    | IF decl_opt condition stmt else
+if: IF decl_opt condition stmt_block %prec IFX
+  | IF decl_opt condition stmt_block elseif
 
-else: ELSE stmt
+elseif: ELSEIF decl_opt condition stmt_block %prec ELSIFX
+      | ELSEIF decl_opt condition stmt_block else
+
+else: ELSE stmt_block
 
 condition: LPAREN exp RPAREN
 
@@ -120,19 +122,19 @@ exps: exp more_exps
     | %empty
 
 more_exps: COMMA exps
-    | %empty
+         | %empty
 
 exp: literal
-    | ID
-    | LPAREN exp RPAREN
-    | exp binop exp
-    | unop exp
-    | func_call
+   | ID
+   | LPAREN exp RPAREN
+   | exp binop exp
+   | unop exp
+   | func_call
 
 binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR
 
 unop: MINUS | NOT
 
 literal: STRING
-    | INT
-    | FLOAT
+       | INT
+       | FLOAT
