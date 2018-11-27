@@ -20,13 +20,20 @@ void yyerror(char *s)
 
 %define parse.error verbose
 
-%token AND ASSIGN BLOCK BREAK COLON COMMA CONTINUE DIVIDE DOT ELIF ELSE
-  EQ GE GT IF LBRACE LBRACK LE LOOP LPAREN LT MINUS NEQ NIL NOT OR PLUS
-  RBRACE RBRACK RETURN RPAREN SEMICOLON TIMES
+%token BLOCK BREAK COLON COMMA CONTINUE DOT IF LBRACE LBRACK LOOP
+  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON SELF
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
 %token <sval> STRING
+%nonassoc IFX
+%nonassoc ELSE
+%left ASSIGN
+%left MINUS PLUS
+%left DIVIDE TIMES
+%left EQ GE GT LE LT
+%left NOT AND OR
+
   
 %start block
 
@@ -36,16 +43,13 @@ block: defs_opt stmts
 
 bracketed_block: LBRACK block RBRACK
 
-bracketed_block_opt: bracketed_block
-    | %empty
-
-defs_opt: def defs_opt
+defs_opt: defs_opt def
     | %empty
 
 colon_opt: COLON
     | %empty
 
-def: BLOCK ID formal_params_opt return_type_opt bracketed_block_opt
+def: BLOCK ID formal_params_opt return_type_opt bracketed_block
 
 return_type_opt: return_type
     | %empty
@@ -67,16 +71,16 @@ decl_init: ASSIGN exp
 formal_params_opt: LPAREN formal_params RPAREN
     | %empty
 
-formal_params: param more_formal_params
+formal_params: more_formal_params param
 
-more_formal_params: COMMA formal_params
+more_formal_params: formal_params COMMA
     | %empty
 
 param: decl
 
 stmt_block: LBRACK stmts RBRACK
 
-stmts: stmt colon_opt stmts
+stmts: stmts colon_opt stmt
     | %empty
 
 stmt: func_call
@@ -91,22 +95,20 @@ stmt: func_call
 
 return: RETURN exp
 
-loop: LOOP decl_opt condition stmt
-    | LOOP decl_opt stmt condition
+loop: LOOP decl_opt loop2
+loop2: condition stmt
+    | stmt condition
 
 continue: CONTINUE
 
 break: BREAK
 
-if: IF decl_opt condition stmt elif_opt
+if: IF decl_opt condition stmt %prec IFX
+    | IF decl_opt condition stmt else
+
+else: ELSE stmt
 
 condition: LPAREN exp RPAREN
-
-elif_opt: ELIF decl_opt condition stmt elif_opt
-    | else_opt
-
-else_opt: ELSE stmt
-    | %empty
 
 assign: ID ASSIGN exp
 

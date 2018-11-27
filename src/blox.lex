@@ -37,7 +37,6 @@ invalid_id          {digit}+({alpha}|_)+
 {comment}           {adjust(); continue;}
 "\n"                {adjust(); EM_newline(); continue;}
 "if"                {adjust(); return IF;}
-"elif"              {adjust(); return ELIF;}
 "else"              {adjust(); return ELSE;}
 "block"             {adjust(); return BLOCK;}
 "loop"              {adjust(); return LOOP;}
@@ -45,6 +44,7 @@ invalid_id          {digit}+({alpha}|_)+
 "and"               {adjust(); return AND;}
 "or"                {adjust(); return OR;}
 "return"            {adjust(); return RETURN;}
+"self"              {adjust(); return SELF;}
 "="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
@@ -58,6 +58,7 @@ invalid_id          {digit}+({alpha}|_)+
 "<"                 {adjust(); return LT;}
 ">="                {adjust(); return GE;}
 "<="                {adjust(); return LE;}
+"."                 {adjust(); return DOT;}
 \{                  {adjust(); return LBRACK;}
 \}                  {adjust(); return RBRACK;}
 \(                  {adjust(); return LPAREN;}

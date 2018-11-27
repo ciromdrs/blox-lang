@@ -1,32 +1,36 @@
-a.out: parsetest.o y.tab.o lex.yy.o errormsg.o util.o
-	cc -g parsetest.o y.tab.o lex.yy.o errormsg.o util.o
+SOURCEDIR = src
+BINDIR = bin
+BUILDDIR = build
 
-parsetest.o: parsetest.c errormsg.h util.h
-	cc -g -c parsetest.c
+blox: $(BUILDDIR)/parser.o $(BUILDDIR)/y.tab.o $(BUILDDIR)/lex.yy.o $(BUILDDIR)/errormsg.o $(BUILDDIR)/util.o
+	cc -g -o blox  $(BUILDDIR)/parser.o $(BUILDDIR)/y.tab.o $(BUILDDIR)/lex.yy.o $(BUILDDIR)/errormsg.o $(BUILDDIR)/util.o
 
-y.tab.o: y.tab.c
-	cc -g -c y.tab.c
+$(BUILDDIR)/parser.o: $(SOURCEDIR)/lex.yy.c $(SOURCEDIR)/errormsg.h $(SOURCEDIR)/util.h
+	cc -g -c -o $(BUILDDIR)/parser.o $(SOURCEDIR)/parser.c
 
-y.tab.c: blox.y
-	yacc -d -y blox.y
+$(BUILDDIR)/y.tab.o: $(SOURCEDIR)/y.tab.c
+	cc -g -c -o $(BUILDDIR)/y.tab.o $(SOURCEDIR)/y.tab.c
 
-y.tab.h: y.tab.c
-	echo "y.tab.h was created at the same time as y.tab.c"
+$(SOURCEDIR)/y.tab.c: $(SOURCEDIR)/blox.y
+	yacc -dyv --output="$(SOURCEDIR)/y.tab.c" $(SOURCEDIR)/blox.y
 
-errormsg.o: errormsg.c errormsg.h util.h
-	cc -g -c errormsg.c
+$(SOURCEDIR)/y.tab.h: $(SOURCEDIR)/y.tab.c
+	echo "$(SOURCEDIR)/y.tab.h was created at the same time as $(SOURCEDIR)/y.tab.c"
 
-lex.yy.o: lex.yy.c y.tab.h errormsg.h util.h
-	cc -g -c lex.yy.c
+$(BUILDDIR)/errormsg.o: $(SOURCEDIR)/errormsg.c $(SOURCEDIR)/errormsg.h $(SOURCEDIR)/util.h
+	cc -g -c -o $(BUILDDIR)/errormsg.o $(SOURCEDIR)/errormsg.c
 
-lex.yy.c: blox.lex # (add this to clean:)
-	lex blox.lex
+$(BUILDDIR)/lex.yy.o: $(SOURCEDIR)/lex.yy.c $(SOURCEDIR)/y.tab.h $(SOURCEDIR)/errormsg.h $(SOURCEDIR)/util.h
+	cc -g -c -o $(BUILDDIR)/lex.yy.o $(SOURCEDIR)/lex.yy.c
 
-util.o: util.c util.h
-	cc -g -c util.c
+$(SOURCEDIR)/lex.yy.c: $(SOURCEDIR)/blox.lex $(SOURCEDIR)/y.tab.h
+	lex -o $(SOURCEDIR)/lex.yy.c $(SOURCEDIR)/blox.lex
+
+$(BUILDDIR)/util.o: $(SOURCEDIR)/util.c $(SOURCEDIR)/util.h
+	cc -g -c -o $(BUILDDIR)/util.o $(SOURCEDIR)/util.c
 
 test:
 	bash tools/run_tests.sh
 
 clean: 
-	rm -f a.out util.o parsetest.o lex.yy.o errormsg.o y.tab.c y.tab.h y.tab.o
+	rm -fR $(BUILDDIR)/* $(SOURCEDIR)/y.tab.c $(SOURCEDIR)/y.tab.h $(SOURCEDIR)/.output $(SOURCEDIR)/lex.yy.c
