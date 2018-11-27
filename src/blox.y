@@ -21,7 +21,7 @@ void yyerror(char *s)
 %define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
-  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON SELF
+  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON SELF EXTENDS
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
@@ -40,51 +40,68 @@ void yyerror(char *s)
 
 %%
 
-block: defs_opt stmts
-
-bracketed_block: LBRACK block RBRACK
+block: defs_opt stmts ;
+                    
+bracketed_block: LBRACK block RBRACK ;
 
 defs_opt: defs_opt def
         | %empty
+        ;
 
 colon_opt: COLON
          | %empty
+         ;
 
-def: BLOCK ID formal_params_opt return_type_opt bracketed_block
+def: BLOCK ID block_header ;
+
+block_header: formal_params_opt return_type_opt block_body_opt
+            | EXTENDS type block_body_opt
+            ;
+            
+block_body_opt: bracketed_block
+              | decl_init
+              | %empty
+              ;
 
 return_type_opt: return_type
                | %empty
+               ;
 
-return_type: type 
+return_type: type  ;
 
-decl: ID type decl_init_opt
+decl: ID type decl_init_opt ;
 
-type: ID
+type: ID ;
 
 decl_opt: decl
         | %empty
+        ;
 
 decl_init_opt: decl_init
              | %empty
+             ;
 
-decl_init: ASSIGN exp
+decl_init: ASSIGN exp ;
 
 formal_params_opt: LPAREN formal_params RPAREN
                  | %empty
+                 ;
 
-formal_params: more_formal_params param
+formal_params: more_formal_params param ;
 
-more_formal_params: formal_params COMMA
+more_formal_params: formal_params COMMA 
                   | %empty
+                  ;
 
-param: decl
+param: decl ;
 
-stmt_block: LBRACK stmts RBRACK
+stmt_block: LBRACK stmts RBRACK ;
 
 stmts: stmts colon_opt stmt
      | %empty
+     ;
 
-stmt: func_call
+stmt: call
     | assign
     | decl
     | if
@@ -92,49 +109,55 @@ stmt: func_call
     | continue
     | break
     | return
+    ;
 
-return: RETURN exp
+return: RETURN exp ;
 
 loop: LOOP decl_opt condition stmt_block
     | LOOP decl_opt stmt_block condition
+    ;
 
-continue: CONTINUE
+continue: CONTINUE ;
 
-break: BREAK
+break: BREAK ;
 
 if: IF decl_opt condition stmt_block %prec IFX
   | IF decl_opt condition stmt_block elseif
+  ;
 
 elseif: ELSEIF decl_opt condition stmt_block %prec ELSIFX
       | ELSEIF decl_opt condition stmt_block else
+      ;
 
-else: ELSE stmt_block
+else: ELSE stmt_block ;
 
-condition: LPAREN exp RPAREN
+condition: LPAREN exp RPAREN ;
 
-assign: ID ASSIGN exp
+assign: ID ASSIGN exp ;
 
-func_call: ID LPAREN actual_params RPAREN
+call: ID LPAREN actual_params_opt RPAREN ;
 
-actual_params: exps
+actual_params_opt: more_exps exp
+                 | %empty
+                 ;
 
-exps: exp more_exps
-    | %empty
-
-more_exps: COMMA exps
+more_exps: more_exps COMMA
          | %empty
+         ;
 
 exp: literal
    | ID
    | LPAREN exp RPAREN
    | exp binop exp
    | unop exp
-   | func_call
+   | call
+   ;
 
-binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR
+binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR ;
 
-unop: MINUS | NOT
+unop: MINUS | NOT ;
 
 literal: STRING
        | INT
        | FLOAT
+       ;

@@ -1,9 +1,9 @@
 # block extending
-block perform_operation(a,b int) int {
-    block operation int;
+block perform_operation(a int,b int) int {
+    block operation int
     return operation()
 }
-block perform_addition(a,b int) int extends perform_operation {
+block perform_addition extends perform_operation {
     block operation int {
         return a+b
     }
@@ -13,25 +13,18 @@ block perform_addition(a,b int) int extends perform_operation {
 
 # classes
 block MyClass {
-    value int
-
-    # return type MyClass implies this method is a constructor,
-    # therefore self is instantiated
-    block new(v int) MyClass {
-        self.value = v
-    }
-    # another suggestion for constructors
-    new MyClass(v int) {
-        self.value = v
-    }
-    
+    block value int
+        
     block show {
-        print(self.value)
+        print(value)
     }
+
+    value int
 }
+
 
 block SubClass extends MyClass{
     block show {
-        print('(', self.value, ')')
+        print('(', value, ')')
     }
 }

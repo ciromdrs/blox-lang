@@ -46,6 +46,7 @@ invalid_id          {digit}+({alpha}|_)+
 "or"                {adjust(); return OR;}
 "return"            {adjust(); return RETURN;}
 "self"              {adjust(); return SELF;}
+"extends"           {adjust(); return EXTENDS;}
 "="                 {adjust(); return ASSIGN;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
