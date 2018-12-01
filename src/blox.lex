@@ -45,9 +45,9 @@ invalid_id          {digit}+({alpha}|_)+
 "and"               {adjust(); return AND;}
 "or"                {adjust(); return OR;}
 "return"            {adjust(); return RETURN;}
-"self"              {adjust(); return SELF;}
-"extends"           {adjust(); return EXTENDS;}
+"this"              {adjust(); return THIS;}
 "="                 {adjust(); return ASSIGN;}
+"&"                 {adjust(); return ADDRESS;}
 ";"                 {adjust(); return COLON;}
 ","                 {adjust(); return COMMA;}
 "+"                 {adjust(); return PLUS;}
@@ -63,6 +63,8 @@ invalid_id          {digit}+({alpha}|_)+
 "."                 {adjust(); return DOT;}
 \{                  {adjust(); return LBRACK;}
 \}                  {adjust(); return RBRACK;}
+\[                  {adjust(); return LBRACE;}
+\]                  {adjust(); return RBRACE;}
 \(                  {adjust(); return LPAREN;}
 \)                  {adjust(); return RPAREN;}
 {number}            {adjust(); yylval.ival=atoi(yytext); return INT;}

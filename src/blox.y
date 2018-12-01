@@ -5,6 +5,8 @@
 
 int yylex(void); /* function prototype */
 
+//A_block absyn_root;
+
 void yyerror(char *s)
 {
  EM_error(EM_tokPos, "%s", s);
@@ -21,7 +23,7 @@ void yyerror(char *s)
 %define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
-  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON SELF EXTENDS
+  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT 
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
@@ -35,14 +37,17 @@ void yyerror(char *s)
 %left EQ GE GT LE LT
 %left NOT AND OR
 
+%type <exp> exp literal
   
 %start block
 
 %%
 
-block: defs_opt stmts ;
+block: defs_opt stmts
+     ;
                     
-bracketed_block: LBRACK block RBRACK ;
+bracketed_block: LBRACK block RBRACK
+               ;
 
 defs_opt: defs_opt def
         | %empty
@@ -52,14 +57,31 @@ colon_opt: COLON
          | %empty
          ;
 
-def: BLOCK ID block_header ;
+def: BLOCK ID block_header
+   | IMPORT identifier
+   | IMPORT STRING
+   ;
+
+identifier: ID id_chain
+          ;
+
+id_chain: DOT identifier id_chain
+        | %empty
+        ;
+
+lhs: ID lhs2
+   ;
+lhs2: DOT identifier lhs2
+    | LBRACE exp RBRACE lhs2
+    | DOT call lhs2
+    | %empty
+    ;
 
 block_header: formal_params_opt return_type_opt block_body_opt
-            | EXTENDS type block_body_opt
             ;
             
 block_body_opt: bracketed_block
-              | decl_init
+              | dec_init
               | %empty
               ;
 
@@ -69,19 +91,19 @@ return_type_opt: return_type
 
 return_type: type  ;
 
-decl: ID type decl_init_opt ;
+dec: ID type dec_init_opt ;
 
 type: ID ;
 
-decl_opt: decl
+dec_opt: dec
         | %empty
         ;
 
-decl_init_opt: decl_init
+dec_init_opt: dec_init
              | %empty
              ;
 
-decl_init: ASSIGN exp ;
+dec_init: ASSIGN exp ;
 
 formal_params_opt: LPAREN formal_params RPAREN
                  | %empty
@@ -93,7 +115,8 @@ more_formal_params: formal_params COMMA
                   | %empty
                   ;
 
-param: decl ;
+param: dec
+     ;
 
 stmt_block: LBRACK stmts RBRACK ;
 
@@ -103,7 +126,7 @@ stmts: stmts colon_opt stmt
 
 stmt: call
     | assign
-    | decl
+    | dec
     | if
     | loop
     | continue
@@ -113,37 +136,41 @@ stmt: call
 
 return: RETURN exp ;
 
-loop: LOOP decl_opt condition stmt_block
-    | LOOP decl_opt stmt_block condition
+loop: LOOP dec_opt condition stmt_block
+    | LOOP dec_opt stmt_block condition
     ;
 
 continue: CONTINUE ;
 
 break: BREAK ;
 
-if: IF decl_opt condition stmt_block %prec IFX
-  | IF decl_opt condition stmt_block elseif
+if: IF dec_opt condition stmt_block %prec IFX
+  | IF dec_opt condition stmt_block elseif
   ;
 
-elseif: ELSEIF decl_opt condition stmt_block %prec ELSIFX
-      | ELSEIF decl_opt condition stmt_block else
+elseif: ELSEIF dec_opt condition stmt_block %prec ELSIFX
+      | ELSEIF dec_opt condition stmt_block else
       ;
 
 else: ELSE stmt_block ;
 
 condition: LPAREN exp RPAREN ;
 
-assign: ID ASSIGN exp ;
+assign: lhs ASSIGN exp
+      ;
 
 call: ID LPAREN actual_params_opt RPAREN ;
 
-actual_params_opt: more_exps exp
+actual_params_opt: exp more_actual_params_opt
+                 | address more_actual_params_opt
                  | %empty
                  ;
 
-more_exps: more_exps COMMA
-         | %empty
-         ;
+address: ADDRESS ID ;
+
+more_actual_params_opt: COMMA actual_params_opt
+                      | %empty
+                      ;
 
 exp: literal
    | ID
