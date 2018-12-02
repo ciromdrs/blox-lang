@@ -40,12 +40,14 @@ invalid_id          {digit}+({alpha}|_)+
 "else"{ws}"if"      {adjust(); return ELSEIF;}
 "else"              {adjust(); return ELSE;}
 "block"             {adjust(); return BLOCK;}
+"as"                {adjust(); return AS;}
 "loop"              {adjust(); return LOOP;}
 "not"               {adjust(); return NOT;}
 "and"               {adjust(); return AND;}
 "or"                {adjust(); return OR;}
 "return"            {adjust(); return RETURN;}
 "this"              {adjust(); return THIS;}
+"goto"              {adjust(); return GOTO;}
 "="                 {adjust(); return ASSIGN;}
 "&"                 {adjust(); return ADDRESS;}
 ";"                 {adjust(); return COLON;}

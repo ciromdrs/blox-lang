@@ -23,7 +23,8 @@ void yyerror(char *s)
 %define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
-  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT 
+  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT
+  GOTO AS
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
@@ -37,7 +38,6 @@ void yyerror(char *s)
 %left EQ GE GT LE LT
 %left NOT AND OR
 
-%type <exp> exp literal
   
 %start block
 
@@ -132,6 +132,7 @@ stmt: call
     | continue
     | break
     | return
+    | stmt_block
     ;
 
 return: RETURN exp ;
