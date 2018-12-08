@@ -18,7 +18,7 @@ A block is a basic unit that may have input (parameters), output
 
 2.3 Types
 The blox compiler performs duck typing.
-The built-in types are int, string and float.
+The built-in types are int, string, bool and float.
 
 2.4 Subprograms
 Subprograms are blocks as well, with input parameters and return values.
