@@ -1,26 +1,27 @@
 %{
 #include <stdio.h>
+#include "absyn.h"
 #include "util.h"
 #include "errormsg.h"
 
 int yylex(void); /* function prototype */
 
-//A_block absyn_root;
+A_block* absyn_root = NULL;
 
-void yyerror(char *s)
-{
- EM_error(EM_tokPos, "%s", s);
+void yyerror(char *s) {
+    EM_error(EM_tokPos, "%s", s);
 }
 %}
 
 %union {
-	int pos;
-	int ival;
-    double fval;
-	string sval;
-	}
+    int         ival;
+    string      sval;
+    float       fval;
+    A_block*    program;
+    A_literal*  literal;
+}
 
-%define parse.error verbose
+ /*%define parse.error verbose*/
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
   LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT
@@ -38,10 +39,15 @@ void yyerror(char *s)
 %left EQ GE GT LE LT
 %left NOT AND OR
 
+%type <literal> literal
+%type <program> program
+
   
-%start block
+%start program
 
 %%
+
+program : literal {absyn_root = A_Block(EM_tokPos, $1);} ;
 
 block: defs_opt stmts
      ;
@@ -58,24 +64,15 @@ colon_opt: COLON
          ;
 
 def: BLOCK ID block_header
-   | IMPORT identifier
+   | IMPORT ID
    | IMPORT STRING
    ;
 
-identifier: ID id_chain
-          ;
-
-id_chain: DOT identifier id_chain
-        | %empty
-        ;
-
-lhs: ID lhs2
+lhs: ID
+   | ID DOT ID
+   | call
+   | ID array_access
    ;
-lhs2: DOT identifier lhs2
-    | LBRACE exp RBRACE lhs2
-    | DOT call lhs2
-    | %empty
-    ;
 
 block_header: formal_params_opt return_type_opt block_body_opt
             ;
@@ -162,30 +159,34 @@ assign: lhs ASSIGN exp
 
 call: ID LPAREN actual_params_opt RPAREN ;
 
+array_access: LBRACE exp RBRACE ;
+
 actual_params_opt: exp more_actual_params_opt
-                 | address more_actual_params_opt
+                 | addressed_id more_actual_params_opt
                  | %empty
                  ;
 
-address: ADDRESS ID ;
+addressed_id: ADDRESS ID ;
 
 more_actual_params_opt: COMMA actual_params_opt
                       | %empty
                       ;
 
 exp: literal
-   | ID
+   | lhs
    | LPAREN exp RPAREN
    | exp binop exp
    | unop exp
-   | call
    ;
 
 binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR ;
 
 unop: MINUS | NOT ;
 
-literal: STRING
-       | INT
-       | FLOAT
+literal: INT    {$$ = A_IntLiteral(EM_tokPos, $1); }
+       | STRING {$$ = A_StringLiteral(EM_tokPos, $1); }
        ;
+
+
+
+%%

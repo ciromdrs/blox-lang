@@ -3,7 +3,7 @@ BINDIR = bin
 BUILDDIR = build
 INCLUDEDIR = include
 
-all: $(BUILDDIR)/util.o $(BUILDDIR)/errormsg.o $(BUILDDIR)/absyn.o $(BUILDDIR)/y.tab.o $(BUILDDIR)/lex.yy.o $(BUILDDIR)/parser.o
+all: $(BUILDDIR)/util.o $(BUILDDIR)/errormsg.o $(BUILDDIR)/absyn.o $(BUILDDIR)/y.tab.o $(BUILDDIR)/lex.yy.o $(BUILDDIR)/main.o
 	cc -g -o blox  $^
 
 $(SOURCEDIR)/y.tab.c: $(SOURCEDIR)/blox.y
