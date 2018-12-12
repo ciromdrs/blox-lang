@@ -28,7 +28,7 @@ ignore              ({ws}|{comment})
 digit               [0-9]
 number              {digit}+
 real                {number}\.{number}
-string              ("\'".*"\'")
+string              (("\'".*"\'")|("\"".*"\""))
 alpha               [a-zA-Z]
 id                  ({alpha}|_)({alpha}|{digit}|_)*
 invalid_id          {digit}+({alpha}|_)+
@@ -49,6 +49,8 @@ invalid_id          {digit}+({alpha}|_)+
 "return"            {adjust(); return RETURN;}
 "this"              {adjust(); return THIS;}
 "goto"              {adjust(); return GOTO;}
+"true"              {adjust(); return TRUE_TOK;}
+"false"             {adjust(); return FALSE_TOK;}
 "="                 {adjust(); return ASSIGN;}
 "&"                 {adjust(); return ADDRESS;}
 ";"                 {adjust(); return COLON;}
@@ -71,7 +73,7 @@ invalid_id          {digit}+({alpha}|_)+
 \(                  {adjust(); return LPAREN;}
 \)                  {adjust(); return RPAREN;}
 {number}            {adjust(); yylval.ival=atoi(yytext); return INT;}
-{real}              {adjust(); yylval.ival=atof(yytext); return FLOAT;}
+{real}              {adjust(); yylval.fval=atof(yytext); return FLOAT;}
 {string}            {adjust(); yylval.sval=String(yytext); return STRING;}
 {id}                {adjust(); yylval.sval=String(yytext); return ID;}
 

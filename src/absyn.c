@@ -24,6 +24,22 @@ A_literal* A_StringLiteral(A_pos pos, char* s){
     return p;
 }
 
+A_literal* A_FloatLiteral(A_pos pos, float f){
+    A_literal* p = checked_malloc(sizeof(*p));
+    p->kind=A_floatLiteral;
+    p->pos=pos;
+    p->value.floatlit=f;
+    return p;
+}
+
+A_literal* A_BoolLiteral(A_pos pos, int b){
+    A_literal* p = checked_malloc(sizeof(*p));
+    p->kind=A_boolLiteral;
+    p->pos=pos;
+    p->value.boollit=b;
+    return p;
+}
+
 A_block* A_Block(A_pos pos, A_literal* lit){
     A_block* p = checked_malloc(sizeof(*p));
     p->kind=lit->kind;

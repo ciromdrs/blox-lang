@@ -5,7 +5,7 @@
 #include <string.h>
 // #include "symbol.h"
 #include "absyn.h"
-// #include "y.tab.h"
+#include "y.tab.h"
 
 extern int yyparse(void);
 int yylex(void);
@@ -14,7 +14,7 @@ extern A_block* absyn_root;
 void tokenize(char* fname);
 A_block* parse(char* fname);
 void parse_test(char* fname);
-void printBlock(A_block* b);
+void print_block(A_block* b);
 
 
 int main(int argc, char **argv) {
@@ -22,9 +22,9 @@ int main(int argc, char **argv) {
         if ((argc == 3) && (strcmp(argv[1],"-t")==0)) {
             tokenize(argv[2]);
         } else {
-            absyn_root = parse(argv[1]);
+            parse(argv[1]);
             // printf("Parsing worked, returning %p\n",absyn_root);
-            printBlock(absyn_root);
+            print_block(absyn_root);
         }
     return 0;
 }
@@ -39,6 +39,9 @@ A_block* parse(char* fname){
 }
 
 void tokenize(char* fname){
+    // NOT WORKING!
+    printf("NOT WORKING!\n");
+    return;
     printf("tokenizing\n");
     int tok = yylex();
     printf("tok before loop %d\n", tok);
@@ -60,11 +63,19 @@ void parse_test(char* fname) {
     else fprintf(stderr,"Parsing failed\n");
 }
 
-void printBlock(A_block* b){
-    printf("b in printBlock %p\n",b);
-    printf("b in printBlock %d\n",b);
+void print_block(A_block* b){
     if (b->kind == A_intLiteral)
-        printf("%d\n", b->value);
-    else
-        printf("%s\n", b->value);
+        printf("%d", b->value.intlit);
+    else if (b->kind == A_stringLiteral)
+        printf("%s", b->value.stringlit);
+    else if (b->kind == A_floatLiteral)
+        printf("%f", b->value.floatlit);
+    else if (b->kind == A_boolLiteral) {
+        if (b->value.boollit == TRUE) 
+            printf("true");
+        else
+            printf("false");
+    } else
+        printf("Unrecognized: %p", b);
+    printf("\n");
 }

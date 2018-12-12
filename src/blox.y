@@ -21,11 +21,11 @@ void yyerror(char *s) {
     A_literal*  literal;
 }
 
- /*%define parse.error verbose*/
+%define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
   LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT
-  GOTO AS
+  GOTO AS TRUE_TOK FALSE_TOK
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
@@ -183,10 +183,12 @@ binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR ;
 
 unop: MINUS | NOT ;
 
-literal: INT    {$$ = A_IntLiteral(EM_tokPos, $1); }
-       | STRING {$$ = A_StringLiteral(EM_tokPos, $1); }
+literal: INT       {$$ = A_IntLiteral(EM_tokPos, $1); }
+       | STRING    {$$ = A_StringLiteral(EM_tokPos, $1); }
+       | FLOAT     {$$ = A_FloatLiteral(EM_tokPos, $1); }
+       | TRUE_TOK  {$$ = A_BoolLiteral(EM_tokPos, TRUE);}
+       | FALSE_TOK {$$ = A_BoolLiteral(EM_tokPos, FALSE);}
        ;
-
 
 
 %%
