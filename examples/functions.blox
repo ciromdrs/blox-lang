@@ -5,3 +5,7 @@
 block sum(a int, b int) int {
     return a+b
 }
+
+block mul(a int, b int) int {
+    return a*b
+}

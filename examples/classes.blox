@@ -3,13 +3,13 @@ block perform_operation(a int,b int) int {
     block operation int
     return operation()
 }
-block perform_addition extends perform_operation {
-    block operation int = a + b
+# block perform_addition extends perform_operation {
+    # block operation int = a + b
     # is equivalent to:
     # block operation int {
     #     return a+b
     # }
-}
+# }
 
 
 
@@ -25,8 +25,8 @@ block MyClass {
 }
 
 
-block SubClass extends MyClass{
-    block show {
-        print('(', value, ')')
-    }
-}
+# block SubClass extends MyClass{
+#     block show {
+#         print('(', value, ')')
+#     }
+# }

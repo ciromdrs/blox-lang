@@ -47,81 +47,61 @@ void yyerror(char *s) {
 
 %%
 
-program : literal {absyn_root = A_Block(EM_tokPos, $1);} ;
+program : block {/*absyn_root = A_Block(EM_tokPos, $1);*/} ;
 
 block: defs_opt stmts
      ;
                     
-bracketed_block: LBRACK block RBRACK
-               ;
-
 defs_opt: defs_opt def
         | %empty
         ;
 
-colon_opt: COLON
-         | %empty
-         ;
-
 def: BLOCK ID block_header
-   | IMPORT ID
-   | IMPORT STRING
-   ;
-
-lhs: ID
-   | ID DOT ID
-   | call
-   | ID array_access
    ;
 
 block_header: formal_params_opt return_type_opt block_body_opt
             ;
-            
-block_body_opt: bracketed_block
-              | dec_init
-              | %empty
-              ;
-
-return_type_opt: return_type
-               | %empty
-               ;
-
-return_type: type  ;
-
-dec: ID type dec_init_opt ;
-
-type: ID ;
-
-dec_opt: dec
-        | %empty
-        ;
-
-dec_init_opt: dec_init
-             | %empty
-             ;
-
-dec_init: ASSIGN exp ;
 
 formal_params_opt: LPAREN formal_params RPAREN
                  | %empty
                  ;
 
-formal_params: more_formal_params param ;
-
-more_formal_params: formal_params COMMA 
-                  | %empty
-                  ;
+formal_params: param COMMA formal_params
+             | param
+             ;
 
 param: dec
      ;
 
+return_type_opt: return_type
+               | %empty
+               ;
+
+return_type: type ;
+
+block_body_opt: LBRACK block RBRACK
+              | %empty
+              ;
+
+type: ID braces ;
+
+braces : LBRACE RBRACE braces
+       | %empty
+       ;
+
+dec: ID type dec_init_opt ;
+
+dec_opt: dec | %empty ;
+
+dec_init_opt: ASSIGN exp | %empty ;
+
 stmt_block: LBRACK stmts RBRACK ;
 
-stmts: stmts colon_opt stmt
+stmts: stmts stmt
      | %empty
      ;
 
-stmt: call
+stmt: func_call
     | assign
     | dec
     | if
@@ -157,7 +137,15 @@ condition: LPAREN exp RPAREN ;
 assign: lhs ASSIGN exp
       ;
 
-call: ID LPAREN actual_params_opt RPAREN ;
+func_call: lhs call
+         ;
+
+lhs: ID
+   | ID DOT ID
+   | ID array_access
+   ;
+
+call: LPAREN actual_params_opt RPAREN ;
 
 array_access: LBRACE exp RBRACE ;
 
@@ -174,12 +162,15 @@ more_actual_params_opt: COMMA actual_params_opt
 
 exp: literal
    | lhs
+   | func_call
    | LPAREN exp RPAREN
    | exp binop exp
    | unop exp
    ;
 
-binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE | AND | OR ;
+binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE
+     | AND | OR
+     ;
 
 unop: MINUS | NOT ;
 
