@@ -18,9 +18,9 @@ void print_block(A_block* b);
 
 
 int main(int argc, char **argv) {
-    if ((argc > 3) || (argc < 2)) {fprintf(stderr,"usage: blox [OPTION] filename\n"); exit(1);}
+    if ((argc > 3) || (argc < 2)) {fprintf(stderr,"usage: blox [-t] filename\n"); exit(1);}
         if ((argc == 3) && (strcmp(argv[1],"-t")==0)) {
-            tokenize(argv[2]);
+            parse_test(argv[2]);
         } else {
             parse(argv[1]);
             // printf("Parsing worked, returning %p\n",absyn_root);
