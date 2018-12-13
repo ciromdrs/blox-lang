@@ -18,9 +18,11 @@ void print_block(A_block* b);
 
 
 int main(int argc, char **argv) {
-    if ((argc > 3) || (argc < 2)) {fprintf(stderr,"usage: blox [-t] filename\n"); exit(1);}
-        if ((argc == 3) && (strcmp(argv[1],"-t")==0)) {
+    if ((argc > 3) || (argc < 2)) {fprintf(stderr,"usage: blox [-test|-tok] filename\n"); exit(1);}
+        if ((argc == 3) && (strcmp(argv[1],"-test")==0)) {
             parse_test(argv[2]);
+        } else if ((argc == 3) && (strcmp(argv[1],"-tok")==0)) {
+            tokenize(argv[2]);
         } else {
             parse(argv[1]);
             // printf("Parsing worked, returning %p\n",absyn_root);
@@ -40,20 +42,13 @@ A_block* parse(char* fname){
 
 void tokenize(char* fname){
     // NOT WORKING!
-    printf("NOT WORKING!\n");
-    return;
-    printf("tokenizing\n");
-    int tok = yylex();
-    printf("tok before loop %d\n", tok);
-    while(tok != 0) {
-        printf("aqqui\n");
-        printf("aqqui\n");
-        printf("aqqui\n");
-        printf("aqqui\n");
-        printf("%4d\n", EM_tokPos);
+    int tok;
+    EM_reset(fname);
+    for(;;) {
         tok=yylex();
+        if (tok==0) break;
+        printf("%d %d\n",tok,EM_tokPos);
     }
-    printf("out\n");
 }
 
 void parse_test(char* fname) {
