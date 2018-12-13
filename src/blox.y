@@ -24,8 +24,10 @@ void yyerror(char *s) {
 %define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
-  LPAREN NEQ RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT
-  GOTO AS TRUE_TOK FALSE_TOK
+  LPAREN RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT GOTO
+  AS TRUE_TOK FALSE_TOK
+  
+  
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
@@ -33,11 +35,18 @@ void yyerror(char *s) {
 %nonassoc IFX
 %nonassoc ELSIFX
 %nonassoc ELSE
-%left ASSIGN
-%left MINUS PLUS
+
+%right ASSIGN
+
 %left DIVIDE TIMES
-%left EQ GE GT LE LT
-%left NOT AND OR
+
+%left MINUS PLUS
+
+%nonassoc EQ NEQ GE GT LE LT
+
+%left NOT
+%left AND
+%left OR
 
 %type <literal> literal
 %type <program> program
@@ -80,7 +89,6 @@ return_type_opt: return_type
 return_type: type ;
 
 block_body_opt: LBRACK block RBRACK
-              | %empty
               ;
 
 type: ID braces ;
@@ -101,7 +109,7 @@ stmts: stmts stmt
      | %empty
      ;
 
-stmt: func_call
+stmt: atom
     | assign
     | dec
     | if
@@ -109,7 +117,6 @@ stmt: func_call
     | continue
     | break
     | return
-    | stmt_block
     ;
 
 return: RETURN exp ;
@@ -134,20 +141,8 @@ else: ELSE stmt_block ;
 
 condition: LPAREN exp RPAREN ;
 
-assign: lhs ASSIGN exp
+assign: atom ASSIGN exp
       ;
-
-func_call: lhs call
-         ;
-
-lhs: ID
-   | ID DOT ID
-   | ID array_access
-   ;
-
-call: LPAREN actual_params_opt RPAREN ;
-
-array_access: LBRACE exp RBRACE ;
 
 actual_params_opt: exp more_actual_params_opt
                  | addressed_id more_actual_params_opt
@@ -156,23 +151,31 @@ actual_params_opt: exp more_actual_params_opt
 
 addressed_id: ADDRESS ID ;
 
-more_actual_params_opt: COMMA actual_params_opt
-                      | %empty
-                      ;
+more_actual_params_opt: COMMA actual_params_opt | %empty ;
+
+atom: ID
+    | ID LPAREN actual_params_opt RPAREN
+    ;
 
 exp: literal
-   | lhs
-   | func_call
+   | ID
+   | ID LPAREN actual_params_opt RPAREN
    | LPAREN exp RPAREN
-   | exp binop exp
-   | unop exp
+   | exp PLUS   exp
+   | exp MINUS  exp
+   | exp TIMES  exp
+   | exp DIVIDE exp
+   | exp EQ  exp
+   | exp NEQ exp
+   | exp GT  exp
+   | exp GE  exp
+   | exp LT  exp
+   | exp LE  exp
+   | exp AND exp
+   | exp OR  exp
+   | MINUS exp
+   | NOT exp
    ;
-
-binop: PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | GT | GE | LT | LE
-     | AND | OR
-     ;
-
-unop: MINUS | NOT ;
 
 literal: INT       {$$ = A_IntLiteral(EM_tokPos, $1); }
        | STRING    {$$ = A_StringLiteral(EM_tokPos, $1); }
