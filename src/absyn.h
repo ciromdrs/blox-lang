@@ -6,27 +6,61 @@
  */
 
 /* Type Definitions */
-typedef int A_pos;
+typedef int A_Pos;
+
+typedef struct{
+    A_Pos pos;
+    void* value;
+}
+A_Block;
+
+
+typedef enum {
+    A_int_literal, A_bool_literal, A_float_literal, A_string_literal
+}
+A_Literal_kind;
 
 typedef struct {
-    A_pos pos;
-    enum {
-        A_intLiteral, A_boolLiteral, A_floatLiteral, A_stringLiteral
-    } kind;
+    A_Pos pos;
+    A_Literal_kind kind;
     union {
         /* nil; - needs only the pos */
-        int intlit;
-        float floatlit;
-        char* stringlit;
-        int boollit;
-    } value;
-} A_literal;
+        int intval;
+        float floatval;
+        char* stringval;
+        int boolval;
+    }
+    value;
+}
+A_Literal;
 
-typedef A_literal A_block;
+
+typedef struct {
+    A_Pos pos;
+    A_Literal* literal;
+}
+A_LiteralExpression;
+
+
+typedef enum {
+    A_literal_expression
+} A_Expression_kind;
+
+typedef struct{
+    A_Pos pos;
+    A_Expression_kind kind;
+    union {
+        A_LiteralExpression* literal_expression;
+    }
+    value;
+}
+A_Expression;
 
 /* Function Prototypes */
-A_literal* A_IntLiteral(A_pos pos, int i);
-A_literal* A_StringLiteral(A_pos pos, char* s);
-A_literal* A_FloatLiteral(A_pos pos, float f);
-A_literal* A_BoolLiteral(A_pos pos, int b);
-A_block* A_Block(A_pos pos, A_literal* lit);
+A_Expression* A_NewExpression(A_Pos pos, A_Expression_kind kind, void* exp);
+A_LiteralExpression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit);
+A_Literal* A_NewIntLiteral(A_Pos pos, int i);
+A_Literal* A_NewStringLiteral(A_Pos pos, char* s);
+A_Literal* A_NewFloatLiteral(A_Pos pos, float f);
+A_Literal* A_NewBoolLiteral(A_Pos pos, int b);
+A_Block* A_NewBlock(A_Pos pos, void* ast_node);

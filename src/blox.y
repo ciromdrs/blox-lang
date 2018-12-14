@@ -6,7 +6,7 @@
 
 int yylex(void); /* function prototype */
 
-A_block* absyn_root = NULL;
+A_Block* absyn_root = NULL;
 
 void yyerror(char *s) {
     EM_error(EM_tokPos, "%s", s);
@@ -14,24 +14,26 @@ void yyerror(char *s) {
 %}
 
 %union {
-    int         ival;
-    string      sval;
-    float       fval;
-    A_block*    program;
-    A_literal*  literal;
+    int           ival;
+    string        sval;
+    float         fval;
+    A_Block*      program;
+    A_Literal*    literal;
+    A_Expression* exp;
 }
 
 %define parse.error verbose
 
 %token BLOCK BREAK COLON COMMA CONTINUE DOT IF ELSEIF LBRACE LBRACK LOOP
-  LPAREN RBRACE RBRACK RETURN RPAREN SEMICOLON THIS ADDRESS IMPORT GOTO
-  AS TRUE_TOK FALSE_TOK
+  RBRACE RBRACK RETURN SEMICOLON THIS ADDRESS IMPORT GOTO AS TRUE_TOK
+  FALSE_TOK LPAREN RPAREN
   
   
 %token <fval> FLOAT
 %token <sval> ID
 %token <ival> INT
 %token <sval> STRING
+
 %nonassoc IFX
 %nonassoc ELSIFX
 %nonassoc ELSE
@@ -48,15 +50,15 @@ void yyerror(char *s) {
 %left AND
 %left OR
 
-%type <literal> literal
 %type <program> program
-
+%type <literal> literal
+%type <exp> exp
   
 %start program
 
 %%
 
-program : block {/*absyn_root = A_Block(EM_tokPos, $1);*/} ;
+program : exp {absyn_root = A_NewBlock(EM_tokPos, $1);} ;
 
 block: defs_opt stmts
      ;
@@ -109,7 +111,7 @@ stmts: stmts stmt
      | %empty
      ;
 
-stmt: atom
+stmt: ID LPAREN actual_params_opt RPAREN ;
     | assign
     | dec
     | if
@@ -155,11 +157,12 @@ more_actual_params_opt: COMMA actual_params_opt | %empty ;
 
 atom: ID
     | ID LPAREN actual_params_opt RPAREN
+    | ID LBRACE exp RBRACE
+    | ID DOT ID
     ;
 
-exp: literal
+exp: literal            {$$ = A_NewExpression(EM_tokPos, A_literal_expression, A_NewLiteralExpression(EM_tokPos, $1));}
    | ID
-   | ID LPAREN actual_params_opt RPAREN
    | LPAREN exp RPAREN
    | exp PLUS   exp
    | exp MINUS  exp
@@ -177,11 +180,11 @@ exp: literal
    | NOT exp
    ;
 
-literal: INT       {$$ = A_IntLiteral(EM_tokPos, $1); }
-       | STRING    {$$ = A_StringLiteral(EM_tokPos, $1); }
-       | FLOAT     {$$ = A_FloatLiteral(EM_tokPos, $1); }
-       | TRUE_TOK  {$$ = A_BoolLiteral(EM_tokPos, TRUE);}
-       | FALSE_TOK {$$ = A_BoolLiteral(EM_tokPos, FALSE);}
+literal: INT       {$$ = A_NewIntLiteral(EM_tokPos, $1); }
+       | STRING    {$$ = A_NewStringLiteral(EM_tokPos, $1); }
+       | FLOAT     {$$ = A_NewFloatLiteral(EM_tokPos, $1); }
+       | TRUE_TOK  {$$ = A_NewBoolLiteral(EM_tokPos, TRUE);}
+       | FALSE_TOK {$$ = A_NewBoolLiteral(EM_tokPos, FALSE);}
        ;
 
 
