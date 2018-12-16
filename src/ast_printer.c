@@ -16,17 +16,24 @@ void Print_Expression(A_Expression* e){
     printf("kind: %d,\n",e->kind);
     printf("value: ");
     if (e->kind == A_literal_expression) {
-        Print_LiteralExpression(e->value.literal_expression); 
-    } else
+        Print_Literal(e->value.literal);
+    } else if (e->kind == A_atom_expression) {
+        Print_Atom(e->value.atom);
+    } else {
         printf("Unrecognized expression: %p", e);
+    }
     printf("\n}");
 }
 
-void Print_LiteralExpression(A_LiteralExpression* e){
+void Print_Atom(A_Atom* a){
     printf("{\n");
-    printf("type: A_LiteralExpression, \n");
-    printf("value: ");
-    Print_Literal(e->literal); 
+    printf("type: A_Atom, \n");
+    printf("kind: %d,\n", a->kind);
+    if (a->kind == A_id_atom) {
+        printf("value: %s", a->value.id);
+    } else {
+        printf("Unrecognized atom: %p", a);
+    }
     printf("\n}");
 }
 

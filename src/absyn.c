@@ -16,20 +16,28 @@ A_Block* A_NewBlock(A_Pos pos, void* ast_node){
     return p;
 }
 
-A_Expression* A_NewExpression(A_Pos pos, A_Expression_kind kind, void* exp){
-    A_Expression* p = checked_malloc(sizeof(*p));
+A_Atom* A_NewIdAtom(A_Pos pos, char* id){//, A_Atom* next){
+    A_Atom* p = checked_malloc(sizeof(*p));
+    p->value.id = id;
+    p->next = NULL;
     p->pos=pos;
-    p->kind = kind;
-    if (kind == A_literal_expression) {
-        p->value.literal_expression = (A_LiteralExpression*) exp;
-    }
+    p->kind = A_id_atom;
     return p;
 }
 
-A_LiteralExpression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit){
-    A_LiteralExpression* p = checked_malloc(sizeof(*p));
+A_Expression* A_NewAtomExpression(A_Pos pos, A_Atom* a){
+    A_Expression* p = checked_malloc(sizeof(*p));
     p->pos=pos;
-    p->literal=lit;
+    p->kind = A_atom_expression;
+    p->value.atom=a;
+    return p;
+}
+
+A_Expression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit){
+    A_Expression* p = checked_malloc(sizeof(*p));
+    p->pos=pos;
+    p->kind = A_literal_expression;
+    p->value.literal=lit;
     return p;
 }
 

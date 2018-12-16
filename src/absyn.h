@@ -35,30 +35,58 @@ typedef struct {
 A_Literal;
 
 
-typedef struct {
-    A_Pos pos;
-    A_Literal* literal;
+typedef enum {
+    A_id_atom, A_subscript_atom, A_call_atom
 }
-A_LiteralExpression;
+A_Atom_kind;
 
+typedef char A_Id;
+
+/*typedef struct {
+    char* name;
+    A_Expression index;
+}
+A_Subscript;
+
+typedef struct {
+    char* name;
+    A_ParamList params;
+}
+A_Call;*/
+
+typedef struct A_Atom_ {
+    A_Pos pos;
+    A_Atom_kind kind;
+    struct A_Atom_* next;
+    union {
+        char* id;
+        //subscript;
+        //call;
+    }
+    value;
+}
+A_Atom;
 
 typedef enum {
-    A_literal_expression
-} A_Expression_kind;
+    A_literal_expression, A_atom_expression
+}
+A_Expression_kind;
 
 typedef struct{
     A_Pos pos;
     A_Expression_kind kind;
     union {
-        A_LiteralExpression* literal_expression;
+        A_Literal* literal;
+        A_Atom* atom;
     }
     value;
 }
 A_Expression;
 
 /* Function Prototypes */
-A_Expression* A_NewExpression(A_Pos pos, A_Expression_kind kind, void* exp);
-A_LiteralExpression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit);
+A_Expression* A_NewAtomExpression(A_Pos pos, A_Atom* a);
+A_Expression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit);
+A_Atom* A_NewIdAtom(A_Pos, char* id);
 A_Literal* A_NewIntLiteral(A_Pos pos, int i);
 A_Literal* A_NewStringLiteral(A_Pos pos, char* s);
 A_Literal* A_NewFloatLiteral(A_Pos pos, float f);

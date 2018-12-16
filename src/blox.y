@@ -17,9 +17,11 @@ void yyerror(char *s) {
     int           ival;
     string        sval;
     float         fval;
-    A_Block*      program;
-    A_Literal*    literal;
+    A_Atom*       atom;
     A_Expression* exp;
+    char*         id;
+    A_Literal*    literal;
+    A_Block*      program;
 }
 
 %define parse.error verbose
@@ -30,9 +32,10 @@ void yyerror(char *s) {
   
   
 %token <fval> FLOAT
-%token <sval> ID
 %token <ival> INT
 %token <sval> STRING
+
+%token <id> ID
 
 %nonassoc IFX
 %nonassoc ELSIFX
@@ -53,6 +56,7 @@ void yyerror(char *s) {
 %type <program> program
 %type <literal> literal
 %type <exp> exp
+%type <atom> atom
   
 %start program
 
@@ -155,14 +159,16 @@ addressed_id: ADDRESS ID ;
 
 more_actual_params_opt: COMMA actual_params_opt | %empty ;
 
-atom: ID
-    | ID LPAREN actual_params_opt RPAREN
-    | ID LBRACE exp RBRACE
-    | ID DOT ID
-    ;
+atom: ID trailer        {$$ = A_NewIdAtom(EM_tokPos, $1);}
 
-exp: literal            {$$ = A_NewExpression(EM_tokPos, A_literal_expression, A_NewLiteralExpression(EM_tokPos, $1));}
-   | ID
+trailer: LPAREN actual_params_opt RPAREN trailer
+    | DOT ID trailer
+    | LBRACE exp RBRACE trailer
+    | %empty
+    ;
+    
+exp: literal            {$$ = A_NewLiteralExpression(EM_tokPos, $1);}
+   | atom               {$$ = A_NewAtomExpression(EM_tokPos, $1);}
    | LPAREN exp RPAREN
    | exp PLUS   exp
    | exp MINUS  exp

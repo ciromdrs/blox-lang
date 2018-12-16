@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "absyn.h"
 
+void Print_Atom(A_Atom* a);
 void Print_Block(A_Block* b);
 void Print_Expression(A_Expression* e);
-void Print_LiteralExpression(A_LiteralExpression* e);
 void Print_Literal(A_Literal* l);
