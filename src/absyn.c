@@ -33,43 +33,35 @@ A_Expression* A_NewAtomExpression(A_Pos pos, A_Atom* a){
     return p;
 }
 
-A_Expression* A_NewLiteralExpression(A_Pos pos, A_Literal* lit){
+A_Expression* A_NewIntExpression(A_Pos pos, int i){
     A_Expression* p = checked_malloc(sizeof(*p));
+    p->kind=A_int_expression;
     p->pos=pos;
-    p->kind = A_literal_expression;
-    p->value.literal=lit;
+    p->value.int_literal=i;
     return p;
 }
 
-A_Literal* A_NewIntLiteral(A_Pos pos, int i){
-    A_Literal* p = checked_malloc(sizeof(*p));
-    p->kind=A_int_literal;
+A_Expression* A_NewStringExpression(A_Pos pos, char* s){
+    A_Expression* p = checked_malloc(sizeof(*p));
+    p->kind=A_string_expression;
     p->pos=pos;
-    p->value.intval=i;
+    p->value.string_literal=s;
     return p;
 }
 
-A_Literal* A_NewStringLiteral(A_Pos pos, char* s){
-    A_Literal* p = checked_malloc(sizeof(*p));
-    p->kind=A_string_literal;
+A_Expression* A_NewFloatExpression(A_Pos pos, float f){
+    A_Expression* p = checked_malloc(sizeof(*p));
+    p->kind=A_float_expression;
     p->pos=pos;
-    p->value.stringval=s;
+    p->value.float_literal=f;
     return p;
 }
 
-A_Literal* A_NewFloatLiteral(A_Pos pos, float f){
-    A_Literal* p = checked_malloc(sizeof(*p));
-    p->kind=A_float_literal;
+A_Expression* A_NewBoolExpression(A_Pos pos, int b){
+    A_Expression* p = checked_malloc(sizeof(*p));
+    p->kind=A_bool_expression;
     p->pos=pos;
-    p->value.floatval=f;
-    return p;
-}
-
-A_Literal* A_NewBoolLiteral(A_Pos pos, int b){
-    A_Literal* p = checked_malloc(sizeof(*p));
-    p->kind=A_bool_literal;
-    p->pos=pos;
-    p->value.boolval=b;
+    p->value.bool_literal=b;
     return p;
 }
 

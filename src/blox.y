@@ -20,7 +20,6 @@ void yyerror(char *s) {
     A_Atom*       atom;
     A_Expression* exp;
     char*         id;
-    A_Literal*    literal;
     A_Block*      program;
 }
 
@@ -54,9 +53,8 @@ void yyerror(char *s) {
 %left OR
 
 %type <program> program
-%type <literal> literal
-%type <exp> exp
-%type <atom> atom
+%type <exp> exp literal
+%type <atom> atom trailer
   
 %start program
 
@@ -167,7 +165,7 @@ trailer: LPAREN actual_params_opt RPAREN trailer
     | %empty
     ;
     
-exp: literal            {$$ = A_NewLiteralExpression(EM_tokPos, $1);}
+exp: literal            {$$ = $1;}
    | atom               {$$ = A_NewAtomExpression(EM_tokPos, $1);}
    | LPAREN exp RPAREN
    | exp PLUS   exp
@@ -186,11 +184,11 @@ exp: literal            {$$ = A_NewLiteralExpression(EM_tokPos, $1);}
    | NOT exp
    ;
 
-literal: INT       {$$ = A_NewIntLiteral(EM_tokPos, $1); }
-       | STRING    {$$ = A_NewStringLiteral(EM_tokPos, $1); }
-       | FLOAT     {$$ = A_NewFloatLiteral(EM_tokPos, $1); }
-       | TRUE_TOK  {$$ = A_NewBoolLiteral(EM_tokPos, TRUE);}
-       | FALSE_TOK {$$ = A_NewBoolLiteral(EM_tokPos, FALSE);}
+literal: INT       {$$ = A_NewIntExpression(EM_tokPos, $1); }
+       | STRING    {$$ = A_NewStringExpression(EM_tokPos, $1); }
+       | FLOAT     {$$ = A_NewFloatExpression(EM_tokPos, $1); }
+       | TRUE_TOK  {$$ = A_NewBoolExpression(EM_tokPos, TRUE);}
+       | FALSE_TOK {$$ = A_NewBoolExpression(EM_tokPos, FALSE);}
        ;
 
 

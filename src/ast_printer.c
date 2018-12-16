@@ -15,13 +15,20 @@ void Print_Expression(A_Expression* e){
     printf("type: A_Expression, \n");
     printf("kind: %d,\n",e->kind);
     printf("value: ");
-    if (e->kind == A_literal_expression) {
-        Print_Literal(e->value.literal);
-    } else if (e->kind == A_atom_expression) {
-        Print_Atom(e->value.atom);
-    } else {
-        printf("Unrecognized expression: %p", e);
-    }
+    switch(e->kind){
+        case A_int_expression:
+            printf("%d", e->value.int_literal); break;
+        case A_bool_expression:
+            printf("%d", e->value.bool_literal); break;
+        case A_float_expression:
+            printf("%f", e->value.float_literal); break;
+        case A_string_expression:
+            printf("%s", e->value.string_literal); break;
+        case A_atom_expression:
+            Print_Atom(e->value.atom); break;
+        default:
+            printf("Unrecognized expression: %p", e);
+    };
     printf("\n}");
 }
 
@@ -34,28 +41,5 @@ void Print_Atom(A_Atom* a){
     } else {
         printf("Unrecognized atom: %p", a);
     }
-    printf("\n}");
-}
-
-void Print_Literal(A_Literal* l){
-    printf("{\n");
-    printf("type: A_Literal, \n");
-    if (l->kind == A_int_literal) {
-        printf("kind: int,\n");
-        printf("value: %d", l->value.intval);
-    } else if (l->kind == A_string_literal) {
-        printf("kind: string,\n");
-        printf("value: %s", l->value.stringval);
-    } else if (l->kind == A_float_literal) {
-        printf("kind: float,\n");
-        printf("value: %f", l->value.floatval);
-    } else if (l->kind == A_bool_literal) {
-        printf("kind: bool,\n");
-        if (l->value.boolval == TRUE) 
-            printf("value: true");
-        else
-            printf("value: false");
-    } else
-        printf("Unrecognized literal: %p", l);
     printf("\n}");
 }
