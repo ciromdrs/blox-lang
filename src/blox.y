@@ -54,7 +54,7 @@ void yyerror(char *s) {
 
 %type <program> program
 %type <exp> exp literal
-%type <atom> atom trailer
+%type <atom> atom
   
 %start program
 
@@ -157,7 +157,7 @@ addressed_id: ADDRESS ID ;
 
 more_actual_params_opt: COMMA actual_params_opt | %empty ;
 
-atom: ID trailer        {$$ = A_NewIdAtom(EM_tokPos, $1);}
+atom: ID trailer        {$$ = A_NewIdAtom(EM_tokPos, $1);} ;
 
 trailer: LPAREN actual_params_opt RPAREN trailer
     | DOT ID trailer
@@ -168,7 +168,7 @@ trailer: LPAREN actual_params_opt RPAREN trailer
 exp: literal            {$$ = $1;}
    | atom               {$$ = A_NewAtomExpression(EM_tokPos, $1);}
    | LPAREN exp RPAREN
-   | exp PLUS   exp
+   | exp PLUS   exp     {$$ = A_NewPlusExpression(EM_tokPos,$1,$3);}
    | exp MINUS  exp
    | exp TIMES  exp
    | exp DIVIDE exp

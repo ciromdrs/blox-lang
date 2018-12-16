@@ -16,6 +16,17 @@ A_Block* A_NewBlock(A_Pos pos, void* ast_node){
     return p;
 }
 
+A_Expression* A_NewPlusExpression(A_Pos pos, A_Expression* left, A_Expression* right){
+    A_Expression* p = checked_malloc(sizeof(*p));
+    p->value.binop = checked_malloc(sizeof(*(p->value.binop)));
+    p->kind=A_plus_expression;
+    p->pos=pos;
+    p->value.binop->left=left;
+    p->value.binop->right=right;
+    p->value.binop->operator=A_plus;
+    return p;
+}
+
 A_Atom* A_NewIdAtom(A_Pos pos, char* id){//, A_Atom* next){
     A_Atom* p = checked_malloc(sizeof(*p));
     p->value.id = id;
