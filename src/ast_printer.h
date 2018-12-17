@@ -9,4 +9,4 @@
 
 void Print_Atom(A_Atom* a);
 void Print_Block(A_Block* b);
-void Print_Expression(A_Expression* e);
+void Print_Exp(A_Exp* e);

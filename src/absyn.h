@@ -36,25 +36,25 @@ A_Atom;
 
 
 typedef struct {
-    struct A_Expression_* left;
-    struct A_Expression_* right;
+    struct A_Exp_* left;
+    struct A_Exp_* right;
     enum {
         A_plus
     }
     operator;
 }
-A_BinOpExpression;
+A_BinOpExp;
 
 
 typedef enum {
-     A_atom_expression, A_bool_expression, A_float_expression, 
-     A_int_expression, A_plus_expression, A_string_expression
+     A_atom_exp, A_bool_exp, A_float_exp, 
+     A_int_exp, A_plus_exp, A_string_exp
 }
-A_Expression_kind;
+A_Exp_kind;
 
-typedef struct A_Expression_ {
+typedef struct A_Exp_ {
     A_Pos pos;
-    A_Expression_kind kind;
+    A_Exp_kind kind;
     union {
         /* nil; - needs only the pos */
         int int_literal;
@@ -62,20 +62,20 @@ typedef struct A_Expression_ {
         char* string_literal;
         int bool_literal;
         A_Atom* atom;
-        A_BinOpExpression* binop;
+        A_BinOpExp* binop;
     }
     value;
 }
-A_Expression;
+A_Exp;
 
 
 
 /* Function Prototypes */
-A_Expression* A_NewAtomExpression(A_Pos pos, A_Atom* a);
+A_Exp* A_NewAtomExp(A_Pos pos, A_Atom* a);
 A_Atom* A_NewIdAtom(A_Pos, char* id);
-A_Expression* A_NewIntExpression(A_Pos pos, int i);
-A_Expression* A_NewStringExpression(A_Pos pos, char* s);
-A_Expression* A_NewFloatExpression(A_Pos pos, float f);
-A_Expression* A_NewBoolExpression(A_Pos pos, int b);
-A_Expression* A_NewPlusExpression(A_Pos pos, A_Expression* left, A_Expression* right);
+A_Exp* A_NewIntExp(A_Pos pos, int i);
+A_Exp* A_NewStringExp(A_Pos pos, char* s);
+A_Exp* A_NewFloatExp(A_Pos pos, float f);
+A_Exp* A_NewBoolExp(A_Pos pos, int b);
+A_Exp* A_NewPlusExp(A_Pos pos, A_Exp* left, A_Exp* right);
 A_Block* A_NewBlock(A_Pos pos, void* ast_node);

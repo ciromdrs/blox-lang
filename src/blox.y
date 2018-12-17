@@ -18,7 +18,7 @@ void yyerror(char *s) {
     string        sval;
     float         fval;
     A_Atom*       atom;
-    A_Expression* exp;
+    A_Exp* exp;
     char*         id;
     A_Block*      program;
 }
@@ -166,9 +166,9 @@ trailer: LPAREN actual_params_opt RPAREN trailer
     ;
     
 exp: literal            {$$ = $1;}
-   | atom               {$$ = A_NewAtomExpression(EM_tokPos, $1);}
+   | atom               {$$ = A_NewAtomExp(EM_tokPos, $1);}
    | LPAREN exp RPAREN
-   | exp PLUS   exp     {$$ = A_NewPlusExpression(EM_tokPos,$1,$3);}
+   | exp PLUS   exp     {$$ = A_NewPlusExp(EM_tokPos,$1,$3);}
    | exp MINUS  exp
    | exp TIMES  exp
    | exp DIVIDE exp
@@ -184,11 +184,11 @@ exp: literal            {$$ = $1;}
    | NOT exp
    ;
 
-literal: INT       {$$ = A_NewIntExpression(EM_tokPos, $1); }
-       | STRING    {$$ = A_NewStringExpression(EM_tokPos, $1); }
-       | FLOAT     {$$ = A_NewFloatExpression(EM_tokPos, $1); }
-       | TRUE_TOK  {$$ = A_NewBoolExpression(EM_tokPos, TRUE);}
-       | FALSE_TOK {$$ = A_NewBoolExpression(EM_tokPos, FALSE);}
+literal: INT       {$$ = A_NewIntExp(EM_tokPos, $1); }
+       | STRING    {$$ = A_NewStringExp(EM_tokPos, $1); }
+       | FLOAT     {$$ = A_NewFloatExp(EM_tokPos, $1); }
+       | TRUE_TOK  {$$ = A_NewBoolExp(EM_tokPos, TRUE);}
+       | FALSE_TOK {$$ = A_NewBoolExp(EM_tokPos, FALSE);}
        ;
 
 
