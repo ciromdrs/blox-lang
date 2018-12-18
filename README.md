@@ -10,7 +10,7 @@ blocks.
 
 ### 2.1 Reserved Words
 List of reserved words:
-(see src/blox.lex)
+(see [/src/blox.lex](/src/blox.lex))
 
 ### 2.2 Blocks
 A block is a basic unit that may have input (parameters), output
@@ -39,12 +39,11 @@ imported block may receive parameters, which must be provided at that
 moment. Imports must be in the definitions section of a block.
 Import syntax:
 
-    `import block_identification \[(params)\] \[as name\]`
+`import block_identification [(params)] [as name]`
 
 Ex.:
 
 ```
-
 import root(2) as sqrt
 import operations.power as pow
 import "mymodule.blox" (param1,param2) as m
