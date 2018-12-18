@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include "absyn.h"
 
-void Print_Atom(A_Atom* a);
-void Print_Block(A_Block* b);
-void Print_Exp(A_Exp* e);
+void Print_Atom(A_Atom*);
+void Print_Block(A_Block*);
+void Print_Exp(A_Exp*);
+void Print_ExpList(A_Exp*);
+void Print_Stmt(A_Stmt*);

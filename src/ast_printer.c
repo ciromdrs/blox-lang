@@ -24,13 +24,27 @@ void close(){
     printf("}");
 }
 
+void open_brace(){
+    printf("[");
+    tabc++;
+}
+
+void close_brace(){
+    printf("\n");
+    tabc--;
+    tabs();
+    printf("]");
+}
+
+
 void Print_Block(A_Block* b){
     open();
     tabs(); printf("type: A_Block, \n");
     tabs(); printf("value: ");
-    Print_Exp((A_Exp*) b->value);
+    Print_Stmt((A_Stmt*) b->value);
     close();
 }
+
 
 void Print_BinOpExp(A_BinOpExp* e){
     open();
@@ -65,14 +79,51 @@ void Print_Exp(A_Exp* e){
     close();
 }
 
+void Print_ExpList(A_Exp* e){
+    open_brace();
+    while(e != NULL){
+        Print_Exp(e);
+        if (e->next != NULL) printf(",\n"); tabs();
+        e = e->next;
+    }
+    close_brace();
+}
+
+
+void Print_CallAtom(A_Atom* p){
+    open();
+    tabs(); printf("id: %s,\n", p->value.call.id);
+    tabs(); printf("params: "); Print_ExpList(p->value.call.params);
+    close();
+}
+
 void Print_Atom(A_Atom* a){
     open();
     tabs(); printf("type: A_Atom, \n");
     tabs(); printf("kind: %d,\n", a->kind);
-    if (a->kind == A_id_atom) {
-        tabs(); printf("value: %s", a->value.id);
-    } else {
-        tabs(); printf("Unrecognized atom: %p", a);
-    }
+    tabs(); printf("value: ");
+    switch (a->kind) {
+        case A_id_atom:
+            printf("%s", a->value.id); break;
+        case A_call_atom:
+            Print_CallAtom(a); break;
+        default:
+            printf("Unrecognized atom: %p", a);
+    };
+    close();
+}
+
+
+void Print_Stmt(A_Stmt* p){
+    open();
+    tabs(); printf("type: A_Stmt, \n");
+    tabs(); printf("kind: %d,\n",p->kind);
+    tabs(); printf("value: ");
+    switch(p->kind){
+        case A_call_stmt:
+            Print_CallAtom(p->value.call); break;
+        default:
+            printf("Unrecognized stmt: %p", p);
+    };
     close();
 }

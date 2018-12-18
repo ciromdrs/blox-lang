@@ -17,10 +17,11 @@ void yyerror(char *s) {
     int           ival;
     string        sval;
     float         fval;
-    A_Atom*       atom;
-    A_Exp* exp;
     char*         id;
-    A_Block*      program;
+    A_Atom*       atom;
+    A_Exp*        exp;
+    A_Block*      block;
+    A_Stmt*       stmt;
 }
 
 %define parse.error verbose
@@ -52,15 +53,16 @@ void yyerror(char *s) {
 %left AND
 %left OR
 
-%type <program> program
-%type <exp> exp literal
+%type <block> program
+%type <exp> exp literal actual_params_opt more_actual_params_opt
 %type <atom> atom
+%type <stmt> stmt
   
 %start program
 
 %%
 
-program : exp {absyn_root = A_NewBlock(EM_tokPos, $1);} ;
+program : stmt {absyn_root = A_NewBlock(EM_tokPos, $1);} ;
 
 block: defs_opt stmts
      ;
@@ -113,7 +115,7 @@ stmts: stmts stmt
      | %empty
      ;
 
-stmt: ID LPAREN actual_params_opt RPAREN ;
+stmt: ID LPAREN actual_params_opt RPAREN {$$ = A_NewCallStmt(EM_tokPos,A_NewCallAtom(EM_tokPos,$1,$3),NULL);}
     | assign
     | dec
     | if
@@ -148,14 +150,16 @@ condition: LPAREN exp RPAREN ;
 assign: atom ASSIGN exp
       ;
 
-actual_params_opt: exp more_actual_params_opt
+actual_params_opt: exp more_actual_params_opt {$$ = $1; $1->next = $2;}
                  | addressed_id more_actual_params_opt
                  | %empty
                  ;
 
 addressed_id: ADDRESS ID ;
 
-more_actual_params_opt: COMMA actual_params_opt | %empty ;
+more_actual_params_opt: COMMA actual_params_opt {$$ = $2;}
+                      | %empty                  {$$ = NULL;}
+                      ;
 
 atom: ID trailer        {$$ = A_NewIdAtom(EM_tokPos, $1);} ;
 

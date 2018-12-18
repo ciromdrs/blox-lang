@@ -16,6 +16,15 @@ A_Block* A_NewBlock(A_Pos pos, void* ast_node){
     return p;
 }
 
+A_Stmt* A_NewCallStmt(A_Pos pos, A_Atom* call, A_Stmt* next){
+    A_Stmt* p = checked_malloc(sizeof(*p));
+    p->value.call = call;
+    p->kind=A_call_stmt;
+    p->pos=pos;
+    p->next = next;
+    return p;
+}
+
 A_Exp* A_NewPlusExp(A_Pos pos, A_Exp* left, A_Exp* right){
     A_Exp* p = checked_malloc(sizeof(*p));
     p->value.binop = checked_malloc(sizeof(*(p->value.binop)));
@@ -34,6 +43,21 @@ A_Atom* A_NewIdAtom(A_Pos pos, char* id){//, A_Atom* next){
     p->pos=pos;
     p->kind = A_id_atom;
     return p;
+}
+
+A_Atom* A_NewCallAtom(A_Pos pos, char* id, A_Exp* params){//, A_Atom* next){
+    A_Atom* p = checked_malloc(sizeof(*p));
+    p->value.call.id = id;
+    p->value.call.params = params;
+    p->pos=pos;
+    p->next = NULL;
+    p->kind = A_call_atom;
+    return p;
+}
+
+A_Exp* A_NewExpList(A_Exp* exp, A_Exp* next){
+    exp->next = next;
+    return exp;
 }
 
 A_Exp* A_NewAtomExp(A_Pos pos, A_Atom* a){
