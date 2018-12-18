@@ -1,4 +1,7 @@
 /*
+ * Adapted from A. W. Appel. Modern Compiler Implementation in C (1997)
+ * https://www.cs.princeton.edu/~appel/modern/c/
+ * 
  * absyn.h - Abstract Syntax Header (Chapter 4)
  *
  * All types and functions declared in this header file begin with "A_"

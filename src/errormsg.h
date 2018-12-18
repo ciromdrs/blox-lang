@@ -1,3 +1,9 @@
+/*
+ * Adapted from A. W. Appel. Modern Compiler Implementation in C (1997)
+ * https://www.cs.princeton.edu/~appel/modern/c/
+ *
+ */
+ 
 extern bool EM_anyErrors;
 
 void EM_newline(void);

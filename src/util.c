@@ -1,4 +1,7 @@
 /*
+ * Adapted from A. W. Appel. Modern Compiler Implementation in C (1997)
+ * https://www.cs.princeton.edu/~appel/modern/c/
+ *
  * util.c - commonly used utility functions.
  */
 

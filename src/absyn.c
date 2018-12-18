@@ -1,4 +1,7 @@
 /*
+ * Adapted from A. W. Appel. Modern Compiler Implementation in C (1997)
+ * https://www.cs.princeton.edu/~appel/modern/c/
+ * 
  * absyn.c - Abstract Syntax Functions. Most functions create an instance of an
  *           abstract syntax rule.
  */

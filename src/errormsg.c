@@ -1,4 +1,7 @@
 /*
+ * Adapted from A. W. Appel. Modern Compiler Implementation in C (1997)
+ * https://www.cs.princeton.edu/~appel/modern/c/
+ * 
  * errormsg.c - functions used in all phases of the compiler to give
  *              error messages about the Tiger program.
  *
