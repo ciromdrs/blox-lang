@@ -41,7 +41,7 @@ void Print_Block(A_Block* b){
     open();
     tabs(); printf("type: A_Block, \n");
     tabs(); printf("value: ");
-    Print_Stmt((A_Stmt*) b->value);
+    Print_StmtList((A_Stmt*) b->value);
     close();
 }
 
@@ -126,4 +126,14 @@ void Print_Stmt(A_Stmt* p){
             printf("Unrecognized stmt: %p", p);
     };
     close();
+}
+
+void Print_StmtList(A_Stmt* p){
+    open_brace();
+    while(p != NULL){
+        Print_Stmt(p);
+        if (p->next != NULL) printf(",\n"); tabs();
+        p = p->next;
+    }
+    close_brace();
 }

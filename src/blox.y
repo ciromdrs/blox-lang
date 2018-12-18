@@ -56,13 +56,13 @@ void yyerror(char *s) {
 %type <block> program
 %type <exp> exp literal actual_params_opt more_actual_params_opt
 %type <atom> atom
-%type <stmt> stmt
+%type <stmt> stmt stmts
   
 %start program
 
 %%
 
-program : stmt {absyn_root = A_NewBlock(EM_tokPos, $1);} ;
+program : stmts {absyn_root = A_NewBlock(EM_tokPos, $1);} ;
 
 block: defs_opt stmts
      ;
@@ -111,8 +111,8 @@ dec_init_opt: ASSIGN exp | %empty ;
 
 stmt_block: LBRACK stmts RBRACK ;
 
-stmts: stmts stmt
-     | %empty
+stmts: stmt stmts {$$ = $1; $1->next = $2;}
+     | %empty     {$$ = NULL;}
      ;
 
 stmt: ID LPAREN actual_params_opt RPAREN {$$ = A_NewCallStmt(EM_tokPos,A_NewCallAtom(EM_tokPos,$1,$3),NULL);}
